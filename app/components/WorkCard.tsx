@@ -49,15 +49,18 @@ function WorkCardComponent({
   const magneticX = useSpring(mouseX, springConfig);
   const magneticY = useSpring(mouseY, springConfig);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const offsetX = e.clientX - centerX;
-    const offsetY = e.clientY - centerY;
-    mouseX.set(offsetX * 0.15);
-    mouseY.set(offsetY * 0.15);
-  }, [mouseX, mouseY]);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const offsetX = e.clientX - centerX;
+      const offsetY = e.clientY - centerY;
+      mouseX.set(offsetX * 0.15);
+      mouseY.set(offsetY * 0.15);
+    },
+    [mouseX, mouseY],
+  );
 
   const handleMouseLeave = useCallback(() => {
     mouseX.set(0);
@@ -108,6 +111,8 @@ function WorkCardComponent({
             <motion.div
               layoutId={`work-card-${work.id}`}
               ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
               className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
             >
               {work.backgroundImage && (
@@ -120,7 +125,7 @@ function WorkCardComponent({
                 />
               )}
               {work.backgroundImage && (
-                <div className="absolute inset-0 bg-black/20 z-0"></motion.div>
+                <motion.div className="absolute inset-0 bg-black/20 z-0"></motion.div>
               )}
 
               {work.centerMedia && (
@@ -157,6 +162,8 @@ function WorkCardComponent({
         <motion.div
           layoutId={`work-card-${work.id}`}
           className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden shadow-2xl pointer-events-auto"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
           style={{
             width: dimensions.width || 0,
             height: dimensions.height || 0,
@@ -184,7 +191,10 @@ function WorkCardComponent({
           )}
 
           {work.centerMedia && (
-            <div className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg">
+            <motion.div
+              style={{ x: magneticX, y: magneticY }}
+              className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
+            >
               {work.centerMedia.type === "video" ? (
                 <video
                   src={work.centerMedia.url}
@@ -203,7 +213,7 @@ function WorkCardComponent({
                   sizes="300px"
                 />
               )}
-            </div>
+            </motion.div>
           )}
         </motion.div>
       </PortalOverlay>
