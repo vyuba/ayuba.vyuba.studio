@@ -1,86 +1,162 @@
-import { LockFilledIcon } from "@shopify/polaris-icons";
-import works from "../data/work";
+"use client";
 
-type Work = (typeof works)[0];
-export default function WorkCard({ work }: { work: Work }) {
+import { useEffect, useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { Work } from "../data/work";
+import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+import { use } from "framer-motion/m";
+
+interface WorkCardProps {
+  work: Work;
+  aspectRatio?: "portrait" | "landscape" | string;
+  className?: string;
+  isExpanded?: boolean;
+  isAnyExpanded?: boolean;
+  onExpand?: () => void;
+  onClose?: () => void;
+}
+
+export default function WorkCard({
+  work,
+  aspectRatio,
+  className = "",
+  isExpanded = false,
+  isAnyExpanded = false,
+  onExpand,
+  onClose,
+}: WorkCardProps) {
+  const router = useRouter();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [scaleFactor, setScaleFactor] = useState(1);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const ratio = aspectRatio || work.aspectRatio || "portrait";
+  const isLandscape =
+    ratio === "landscape" ||
+    ratio === "16/10" ||
+    ratio === "16/9" ||
+    ratio === "4/3" ||
+    ratio === "wide";
+
+  const heightClass = isLandscape
+    ? "aspect-[4/3] md:aspect-auto md:h-[363px]"
+    : "aspect-[3/4] md:aspect-auto md:h-[445px]";
+
+  const openCard = () => {
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      setDimensions({ width: rect.width, height: rect.height });
+
+      const targetWidth = window.innerWidth * 0.7;
+      const targetHeight = window.innerHeight * 0.65;
+      const scaleX = targetWidth / rect.width;
+      const scaleY = targetHeight / rect.height;
+      setScaleFactor(Math.min(scaleX, scaleY));
+    }
+    if (onExpand) onExpand();
+  };
+
+  const closeCard = useCallback(() => {
+    if (onClose) onClose();
+  }, [onClose]);
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (isExpanded) return;
+    e.preventDefault();
+    if (work.hasCaseStudy) {
+      const destination = work.caseStudyUrl || work.link;
+      if (destination.startsWith("http")) {
+        window.open(destination, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(destination);
+      }
+    } else {
+      openCard();
+    }
+  };
+
+  useEffect(() => {
+    if (!isExpanded) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeCard();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isExpanded, closeCard]);
+
   return (
-    <article className="group/work-card cursor-pointer" key={work.id}>
-      <div className="bg-[#F1EFEE] rounded-xl w-full h-[500px] relative cursor-pointer">
-        <ul className="absolute right-4 top-4 flex flex-wrap gap-1">
-          {work.commingSoon ? (
-            <li className=" text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit  bg-white rounded-sm px-3 py-1.5 uppercase w-fit">
-              <span className="text-black/60 ">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14px"
-                  height="14px"
-                  viewBox="0 0 24 24"
-                >
-                  <g fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="10" />
-                    <ellipse cx="12" cy="12" rx="4" ry="10" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2 12h20"
-                    />
-                  </g>
-                </svg>
-              </span>
-              <p>view Case study</p>
-            </li>
-          ) : (
-            <li className=" text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit bg-white rounded-sm px-3 py-1.5 uppercase w-fit">
-              <LockFilledIcon width={18} fill="currentColor" />
-              <p>comming soon</p>
-            </li>
-          )}
-          {work.liveLink ? (
-            <li className=" text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit  bg-white rounded-sm px-3 py-1.5 uppercase w-fit">
-              <span className="text-black/60 ">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14px"
-                  height="14px"
-                  viewBox="0 0 24 24"
-                >
-                  <g fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="10" />
-                    <ellipse cx="12" cy="12" rx="4" ry="10" />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2 12h20"
-                    />
-                  </g>
-                </svg>
-              </span>
-              <p>view Live</p>
-            </li>
-          ) : (
-            ""
-          )}
-        </ul>
-        <ul className="absolute md:opacity-0 opacity-100 backdrop-blur-3xl group-hover/work-card:opacity-100 group/work-card:backdrop-blur-none duration-300 flex transition-all bottom-4 text-black/60 font-mono font-medium left-4 text-xs flex-wrap gap-1 max-w-[300]">
-          {work.skills.map((skill: string) => (
-            <li
-              key={skill}
-              className=" bg-white rounded-sm px-3 py-1.5 uppercase"
+    <>
+      <article
+        className={`group/work-card cursor-pointer w-full pb-3 ${className}`}
+        key={work.id}
+      >
+        {/* Placeholder slot in grid */}
+        <div className={`w-full ${heightClass}`} onClick={handleClick}>
+          {!isExpanded && (
+            <motion.div
+              layoutId={`work-card-${work.id}`}
+              ref={cardRef}
+              className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 overflow-hidden active:scale-[0.99] w-full h-full"
             >
-              {skill}
-            </li>
-          ))}
-          <li className=" bg-white rounded-sm px-3 py-1.5 uppercase">3+</li>
-        </ul>
-      </div>
-      <div className="flex flex-col gap-0.5 mt-2 px-3">
-        <p className="text-base font-medium text-black capitalize">
-          {work.title}
-        </p>
-        <p className="text-xs font-medium text-black/60 font-mono uppercase">
-          {work.type}
-        </p>
-      </div>
-    </article>
+              {/* Collapsed Card view */}
+            </motion.div>
+          )}
+        </div>
+      </article>
+
+      {mounted &&
+        createPortal(
+          <>
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="fixed inset-0 z-40 bg-[#c6c6c6]/5 backdrop-blur-xs"
+                  onClick={closeCard}
+                  aria-hidden="true"
+                />
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {isExpanded && (
+                <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center">
+                  <motion.div
+                    layoutId={`work-card-${work.id}`}
+                    className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 overflow-hidden shadow-2xl pointer-events-auto"
+                    style={{
+                      width: dimensions.width || 0,
+                      height: dimensions.height || 0,
+                    }}
+                    animate={{
+                      scale: scaleFactor,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30,
+                    }}
+                  >
+                    {/* Expanded Card view */}
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+          </>,
+          document.body,
+        )}
+    </>
   );
 }
