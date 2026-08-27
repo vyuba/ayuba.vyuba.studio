@@ -12,6 +12,11 @@ export interface Work {
   hasCaseStudy?: boolean;
   caseStudyUrl?: string;
   description?: string;
+  backgroundImage?: string;
+  centerMedia?: {
+    type: "image" | "video";
+    url: string;
+  };
 }
 
 const works: Work[] = [
@@ -37,6 +42,11 @@ const works: Work[] = [
     caseStudyUrl: "https://example.com/project1",
     description:
       "A premier creative agency and digital brand platform built with Next.js, Shopify, and bespoke motion design.",
+    backgroundImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    centerMedia: {
+      type: "video",
+      url: "https://www.w3schools.com/html/mov_bbb.mp4"
+    }
   },
   {
     id: 2,
