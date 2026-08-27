@@ -3,7 +3,7 @@
 import { useState, useRef, memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Work } from "../data/work";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
 import PortalOverlay from "./PortalOverlay";
 
@@ -41,6 +41,28 @@ function WorkCardComponent({
   const cardRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [scaleFactor, setScaleFactor] = useState(1);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 20, stiffness: 300, mass: 0.5 };
+  const magneticX = useSpring(mouseX, springConfig);
+  const magneticY = useSpring(mouseY, springConfig);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const offsetX = e.clientX - centerX;
+    const offsetY = e.clientY - centerY;
+    mouseX.set(offsetX * 0.15);
+    mouseY.set(offsetY * 0.15);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    mouseX.set(0);
+    mouseY.set(0);
+  }, [mouseX, mouseY]);
 
   const ratio = aspectRatio || work.aspectRatio || "portrait";
   const heightClass = getHeightClass(ratio);
@@ -88,7 +110,6 @@ function WorkCardComponent({
               ref={cardRef}
               className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
             >
-              
               {work.backgroundImage && (
                 <Image
                   src={work.backgroundImage}
@@ -99,12 +120,15 @@ function WorkCardComponent({
                 />
               )}
               {work.backgroundImage && (
-                <div className="absolute inset-0 bg-black/20 z-0"></div>
+                <div className="absolute inset-0 bg-black/20 z-0"></motion.div>
               )}
-              
+
               {work.centerMedia && (
-                <div className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg">
-                  {work.centerMedia.type === 'video' ? (
+                <motion.div
+                  style={{ x: magneticX, y: magneticY }}
+                  className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
+                >
+                  {work.centerMedia.type === "video" ? (
                     <video
                       src={work.centerMedia.url}
                       autoPlay
@@ -122,42 +146,8 @@ function WorkCardComponent({
                       sizes="300px"
                     />
                   )}
-                </div>
+                </motion.div>
               )}
-
-              <div className="absolute inset-0 z-20 flex flex-col justify-between p-4 pointer-events-none">
-                <ul className="flex flex-wrap gap-1 self-end pointer-events-auto">
-                  {work.commingSoon ? (
-                    <li className="text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit bg-white rounded-sm px-3 py-1.5 uppercase w-fit shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 11v6m0-12a2 2 0 1 0 0 4a2 2 0 1 0 0-4Zm0 0V3m0 20a10 10 0 1 0 0-20a10 10 0 1 0 0 20Z"/></svg>
-                      <p>comming soon</p>
-                    </li>
-                  ) : work.liveLink ? (
-                    <li className="text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit bg-white rounded-sm px-3 py-1.5 uppercase w-fit shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><ellipse cx="12" cy="12" rx="4" ry="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M2 12h20" /></g></svg>
-                      <p>view Live</p>
-                    </li>
-                  ) : null}
-                </ul>
-                <div className="flex flex-col gap-2 mt-auto">
-                  <ul className="flex flex-wrap gap-1 md:opacity-0 opacity-100 group-hover/work-card:opacity-100 transition-opacity duration-300 pointer-events-auto">
-                    {work.skills.map((skill: string) => (
-                      <li key={skill} className="text-xs font-medium font-mono text-black/60 bg-white rounded-sm px-3 py-1.5 uppercase shadow-sm">
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-col gap-0.5 mt-2 bg-white/80 backdrop-blur-md p-3 rounded-lg w-fit pointer-events-auto">
-                    <p className="text-base font-medium text-black capitalize">
-                      {work.title}
-                    </p>
-                    <p className="text-xs font-medium text-black/60 font-mono uppercase">
-                      {work.type}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
             </motion.div>
           ) : null}
         </div>
@@ -180,76 +170,41 @@ function WorkCardComponent({
             damping: 30,
           }}
         >
-          
-              {work.backgroundImage && (
+          {work.backgroundImage && (
+            <Image
+              src={work.backgroundImage}
+              alt={work.title}
+              fill
+              className="object-cover z-0"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          )}
+          {work.backgroundImage && (
+            <div className="absolute inset-0 bg-black/20 z-0"></div>
+          )}
+
+          {work.centerMedia && (
+            <div className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg">
+              {work.centerMedia.type === "video" ? (
+                <video
+                  src={work.centerMedia.url}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              ) : (
                 <Image
-                  src={work.backgroundImage}
+                  src={work.centerMedia.url}
                   alt={work.title}
                   fill
-                  className="object-cover z-0"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                  sizes="300px"
                 />
               )}
-              {work.backgroundImage && (
-                <div className="absolute inset-0 bg-black/20 z-0"></div>
-              )}
-              
-              {work.centerMedia && (
-                <div className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg">
-                  {work.centerMedia.type === 'video' ? (
-                    <video
-                      src={work.centerMedia.url}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={work.centerMedia.url}
-                      alt={work.title}
-                      fill
-                      className="object-cover"
-                      sizes="300px"
-                    />
-                  )}
-                </div>
-              )}
-
-              <div className="absolute inset-0 z-20 flex flex-col justify-between p-4 pointer-events-none">
-                <ul className="flex flex-wrap gap-1 self-end pointer-events-auto">
-                  {work.commingSoon ? (
-                    <li className="text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit bg-white rounded-sm px-3 py-1.5 uppercase w-fit shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 11v6m0-12a2 2 0 1 0 0 4a2 2 0 1 0 0-4Zm0 0V3m0 20a10 10 0 1 0 0-20a10 10 0 1 0 0 20Z"/></svg>
-                      <p>comming soon</p>
-                    </li>
-                  ) : work.liveLink ? (
-                    <li className="text-xs font-medium font-mono items-center justify-center flex gap-0.5 text-black/70 h-fit bg-white rounded-sm px-3 py-1.5 uppercase w-fit shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><ellipse cx="12" cy="12" rx="4" ry="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M2 12h20" /></g></svg>
-                      <p>view Live</p>
-                    </li>
-                  ) : null}
-                </ul>
-                <div className="flex flex-col gap-2 mt-auto">
-                  <ul className="flex flex-wrap gap-1 md:opacity-0 opacity-100 group-hover/work-card:opacity-100 transition-opacity duration-300 pointer-events-auto">
-                    {work.skills.map((skill: string) => (
-                      <li key={skill} className="text-xs font-medium font-mono text-black/60 bg-white rounded-sm px-3 py-1.5 uppercase shadow-sm">
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-col gap-0.5 mt-2 bg-white/80 backdrop-blur-md p-3 rounded-lg w-fit pointer-events-auto">
-                    <p className="text-base font-medium text-black capitalize">
-                      {work.title}
-                    </p>
-                    <p className="text-xs font-medium text-black/60 font-mono uppercase">
-                      {work.type}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
+            </div>
+          )}
         </motion.div>
       </PortalOverlay>
     </>
