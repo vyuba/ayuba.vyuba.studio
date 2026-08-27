@@ -6,6 +6,7 @@ import { Work } from "../data/work";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
 import PortalOverlay from "./PortalOverlay";
+import { ArrowDiagonalIcon } from "@shopify/polaris-icons";
 
 interface WorkCardProps {
   work: Work;
@@ -28,6 +29,115 @@ function getHeightClass(ratio: string): string {
     ? "aspect-[4/3] md:aspect-auto md:h-[363px]"
     : "aspect-[3/4] md:aspect-auto md:h-[445px]";
 }
+
+const overlayVariants = {
+  initial: { backgroundColor: "rgba(0, 0, 0, 0)" },
+  hover: {
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+  exit: {
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+};
+
+const titleVariants = {
+  initial: {
+    backgroundColor: "#FBFBFB",
+    color: "rgba(0, 0, 0, 0.8)",
+  },
+  hover: {
+    backgroundColor: "#000000",
+    color: "#FBFBFB",
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+  exit: {
+    backgroundColor: "#FBFBFB",
+    color: "rgba(0, 0, 0, 0.8)",
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  },
+};
+
+const skillsContainerVariants = {
+  initial: {},
+  hover: {
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const skillItemVariants = {
+  initial: {
+    opacity: 0,
+    x: -14,
+  },
+  hover: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.25,
+      ease: "easeOut" as const,
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: -14,
+    transition: {
+      duration: 0.25,
+      ease: "easeIn" as const,
+    },
+  },
+};
+
+const firstArrowVariants = {
+  initial: { x: 0, y: 0, opacity: 1 },
+  hover: {
+    x: "100%",
+    y: "-100%",
+    opacity: 0,
+    transition: {
+      type: "tween" as const,
+      duration: 0.3,
+      ease: "easeInOut" as const,
+    },
+  },
+  exit: {
+    x: 0,
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "tween" as const,
+      duration: 0.3,
+      ease: "easeInOut" as const,
+    },
+  },
+};
+
+const secondArrowVariants = {
+  initial: { x: "-100%", y: "100%", opacity: 0 },
+  hover: {
+    x: 0,
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "tween" as const,
+      duration: 0.3,
+      ease: "easeInOut" as const,
+    },
+  },
+  exit: {
+    x: "-100%",
+    y: "100%",
+    opacity: 0,
+    transition: {
+      type: "tween" as const,
+      duration: 0.3,
+      ease: "easeInOut" as const,
+    },
+  },
+};
 
 function WorkCardComponent({
   work,
@@ -134,16 +244,18 @@ function WorkCardComponent({
             <motion.div
               layoutId={`work-card-${work.id}`}
               ref={cardRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="bg-[#F5F5F5] rounded-[19px]  cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
+              initial="initial"
+              whileHover="hover"
+              // onMouseMove={handleMouseMove}
+              // onMouseLeave={handleMouseLeave}
+              className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
             >
               {work.backgroundImage && (
                 <Image
                   src={work.backgroundImage}
                   alt={work.title}
                   fill
-                  className={`object-cover z-0 object-center ${work.centerMedia ? "scale-110 opacity-90" : ""}`}
+                  className={`object-cover z-0 object-center ${work.centerMedia ? "scale-110 opacity-90 group-hover/work-card:scale-112 duration-700 transition-all " : "group-hover/work-card:scale-102 duration-700 transition-all "}`}
                   sizes="(max-width: 768px) 100vw, 100vw"
                 />
               )}
@@ -161,7 +273,7 @@ function WorkCardComponent({
                       work.centerMedia.aspectRatio ||
                       undefined,
                   }}
-                  className="absolute inset-0 m-auto w-auto h-auto max-w-[85%] max-h-[70%] z-10 flex items-center justify-center pointer-events-none overflow-hidden shadow-lg "
+                  className="absolute inset-0 m-auto w-auto h-auto max-w-[85%] max-h-[70%] z-10 flex items-center justify-center pointer-events-none overflow-hidden shadow-lg group-hover/work-card:scale-102 duration-700 transition-all"
                 >
                   {work.centerMedia.type === "video" ? (
                     <video
@@ -185,6 +297,52 @@ function WorkCardComponent({
                   )}
                 </motion.div>
               )}
+              <motion.div
+                variants={overlayVariants}
+                className="w-full h-full flex justify-between flex-col relative z-10"
+              >
+                <div className="p-5 w-full flex justify-between items-center relative z-10">
+                  <motion.h2
+                    variants={titleVariants}
+                    className="rounded-full px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight"
+                  >
+                    {work.title}
+                  </motion.h2>
+
+                  <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
+                    <motion.div
+                      variants={firstArrowVariants}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <ArrowDiagonalIcon className="size-4" />
+                    </motion.div>
+                    <motion.div
+                      variants={secondArrowVariants}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <ArrowDiagonalIcon className="size-4" />
+                    </motion.div>
+                  </motion.div>
+                </div>
+                <motion.div
+                  variants={skillsContainerVariants}
+                  className="p-5 w-full max-w-[75%] flex items-center z-10 gap-1 flex-wrap"
+                >
+                  {work.skills &&
+                    work.skills.length > 0 &&
+                    work.skills.map((skill) => {
+                      return (
+                        <motion.p
+                          key={skill}
+                          variants={skillItemVariants}
+                          className="bg-[#FBFBFB] rounded-full px-2.5 py-1.5 text-xs  text-center font-medium text-black/70 font-inter-tight"
+                        >
+                          {skill}
+                        </motion.p>
+                      );
+                    })}
+                </motion.div>
+              </motion.div>
             </motion.div>
           ) : null}
         </div>
@@ -254,6 +412,29 @@ function WorkCardComponent({
               )}
             </motion.div>
           )}
+
+          <motion.div className="w-full h-full flex justify-between flex-col relative z-10">
+            <div className="p-5 w-full flex justify-between items-center relative z-10">
+              <motion.h2 className="rounded-full bg-[#fbfbfb] text-black/70 px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight">
+                {work.title}
+              </motion.h2>
+
+              <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
+                <motion.div
+                  variants={firstArrowVariants}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <ArrowDiagonalIcon className="size-4" />
+                </motion.div>
+                <motion.div
+                  variants={secondArrowVariants}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <ArrowDiagonalIcon className="size-4" />
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
         </motion.div>
       </PortalOverlay>
     </>
