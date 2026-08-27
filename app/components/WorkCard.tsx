@@ -56,8 +56,8 @@ function WorkCardComponent({
       const centerY = rect.top + rect.height / 2;
       const offsetX = e.clientX - centerX;
       const offsetY = e.clientY - centerY;
-      mouseX.set(offsetX * 0.15);
-      mouseY.set(offsetY * 0.15);
+      mouseX.set(offsetX * 0.05);
+      mouseY.set(offsetY * 0.05);
     },
     [mouseX, mouseY],
   );
@@ -130,8 +130,8 @@ function WorkCardComponent({
 
               {work.centerMedia && (
                 <motion.div
-                  style={{ x: magneticX, y: magneticY }}
-                  className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
+                  style={{ x: magneticX, y: magneticY, aspectRatio: work.centerMedia.aspectRatio || "1/1" }}
+                  className="absolute inset-0 m-auto w-[50%] h-auto max-w-[250px] max-h-[70%] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
                 >
                   {work.centerMedia.type === "video" ? (
                     <video
@@ -192,8 +192,8 @@ function WorkCardComponent({
 
           {work.centerMedia && (
             <motion.div
-              style={{ x: magneticX, y: magneticY }}
-              className="absolute inset-0 m-auto w-[60%] h-[50%] md:w-[250px] md:h-[350px] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
+              style={{ x: magneticX, y: magneticY, aspectRatio: work.centerMedia.aspectRatio || "1/1" }}
+              className="absolute inset-0 m-auto w-[50%] h-auto max-w-[250px] max-h-[70%] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
             >
               {work.centerMedia.type === "video" ? (
                 <video

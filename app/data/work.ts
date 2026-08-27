@@ -16,6 +16,7 @@ export interface Work {
   centerMedia?: {
     type: "image" | "video";
     url: string;
+    aspectRatio?: string;
   };
 }
 
@@ -42,11 +43,13 @@ const works: Work[] = [
     caseStudyUrl: "https://example.com/project1",
     description:
       "A premier creative agency and digital brand platform built with Next.js, Shopify, and bespoke motion design.",
-    backgroundImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    backgroundImage:
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
     centerMedia: {
       type: "video",
-      url: "https://www.w3schools.com/html/mov_bbb.mp4"
-    }
+      url: "https://www.w3schools.com/html/mov_bbb.mp4",
+      aspectRatio: "16/9",
+    },
   },
   {
     id: 2,
@@ -84,6 +87,12 @@ const works: Work[] = [
     caseStudyUrl: "https://example.com/project2",
     description:
       "High-conversion bespoke Shopify storefront engineered for skincare brand storytelling and fast checkout.",
+    backgroundImage:
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    centerMedia: {
+      type: "video",
+      url: "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
   },
   {
     id: 4,
@@ -99,6 +108,12 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
+    backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png",
+    centerMedia: {
+      type: "video",
+      url: "/works/shopatunruly.com/shopatunruly-center-media.mov",
+      aspectRatio: "9/16",
+    },
   },
   {
     id: 5,
@@ -114,6 +129,11 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
+    backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png",
+    centerMedia: {
+      type: "video",
+      url: "/works/shopatunruly.com/shopatunruly-center-media.mov",
+    },
   },
   {
     id: 6,
