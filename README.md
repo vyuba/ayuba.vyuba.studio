@@ -23,4 +23,3 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 ---
 
 Feel free to explore the code and reach out for collaborations or feedback!
-# portfolio-v2
