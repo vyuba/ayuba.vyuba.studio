@@ -3,13 +3,13 @@ export const NavLinks = {
     {
       id: 1,
       link: "#home",
-      title: "home",
+      title: "Ayuba",
       beta: false,
     },
     {
       id: 2,
       link: "#works",
-      title: "works",
+      title: "Engineer x Designer",
       beta: true,
     },
     {

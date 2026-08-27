@@ -3,7 +3,7 @@ import { NavLinks } from "@/app/data/constant";
 export default function Footer() {
   return (
     <footer className="w-full py-5 flex flex-col gap-10">
-      <div className="w-full max-w-4xl mx-auto min-h-52 bg-[#F1EFEE] rounded-md p-5 flex flex-wrap gap-10 justify-between">
+      <div className="w-full max-w-4xl mx-auto min-h-52 bg-[#F5F5F5] rounded-md p-5 flex flex-wrap gap-10 justify-between">
         <nav className="flex flex-col gap-2">
           <p className="text-black font-mono text-sm uppercase font-medium">
             Menu
@@ -78,7 +78,7 @@ export default function Footer() {
       </div>
       <div className="w-full flex items-center justify-between text-black/70 font-mono text-xs uppercase font-medium relative">
         <p>© vyuba, 2025.</p>
-        <button className="uppercase hidden md:block bg-[#F1EFEE] py-1.5 px-2 cursor-pointer absolute bottom-0 left-[50%] -translate-x-1/2">
+        <button className="uppercase hidden md:block bg-[#F5F5F5] py-1.5 px-2 cursor-pointer absolute bottom-0 left-[50%] -translate-x-1/2">
           Back to top
         </button>
         <p>All rights reserved, all I Think so.</p>

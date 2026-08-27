@@ -4,20 +4,20 @@ export default function ArticleSection() {
       <h3 className="font-mono uppercase font-normal px-3">Artlcles</h3>
       <div className="grid relative z-10 col-start-1 col-end-13 md:grid-cols-2 grid-gap w-full gap-1.5">
         <article className="flex gap-0.5 flex-col md:flex-row w-full">
-          <div className="bg-[#F1EFEE] shrink-0 rounded-xl w-full md:w-[220] h-[300px] relative cursor-pointer"></div>
+          <div className="bg-[#F5F5F5] shrink-0 rounded-xl w-full md:w-[220] h-[300px] relative cursor-pointer"></div>
           <div className="flex flex-col gap-2 mt-2 px-3 h-full">
             <p className="text-lg font-medium text-black">
               Why Your E-commerce Store is Leaking Revenue: The Technical
               Essentials You&apos;re Missing
             </p>
             <ul className=" font-mono font-medium text-black/60 text-xs flex flex-wrap gap-1 max-w-[300]">
-              <li className=" bg-[#F1EFEE] rounded-sm px-3 py-1.5 uppercase">
+              <li className=" bg-[#F5F5F5] rounded-sm px-3 py-1.5 uppercase">
                 Shopify
               </li>
-              <li className=" bg-[#F1EFEE] rounded-sm px-3 py-1.5 uppercase">
+              <li className=" bg-[#F5F5F5] rounded-sm px-3 py-1.5 uppercase">
                 Productivity
               </li>
-              <li className=" bg-[#F1EFEE] rounded-sm px-3 py-1.5 uppercase">
+              <li className=" bg-[#F5F5F5] rounded-sm px-3 py-1.5 uppercase">
                 1+
               </li>
             </ul>
