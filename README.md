@@ -1,17 +1,24 @@
-# Ayuba's Portfolio
+# 👋 Hi, I'm Alexander Ayuba (: you can call me vyuba
 
-This is a personal portfolio website built with Next.js. It showcases my work, articles, and design approach as a software engineer and Shopify specialist. The site is a digital space to highlight projects, share knowledge, and connect with clients and collaborators.
+> _Frontend Developer | Builder_
 
-## Features
+### 🧭 Current Focus
 
-- Modern, minimalist design
-- Work and article sections
-- Responsive across devices
-- Built with Next.js and React
+- Exploring shopify ecosystem with building shopify web apps.
+- Building and shipping SaaS tools.
+- Creating interactive UI experiences with animation, motion, and interaction in mind.
 
-## Getting Started
+### 🧰 Tools I Work With
 
-To run locally:
+```ts
+Figma · TypeScript · React · Next.js · Tailwind CSS · GSAP · Framer Motion · Liquid · Shopify App Development · Convex · Appwrite · Supabase · MongoDB · Drizzle
+```
+
+---
+
+### 🚀 Getting Started
+
+To run this portfolio locally:
 
 ```bash
 npm install
@@ -19,7 +26,3 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the site.
-
----
-
-Feel free to explore the code and reach out for collaborations or feedback!
