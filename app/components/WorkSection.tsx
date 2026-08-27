@@ -1,13 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import works from "../data/work";
 import WorkCard from "./WorkCard";
 import { motion } from "framer-motion";
 
+// Hoisted outside component to prevent re-filtering on every render (js-combine-iterations / rendering-hoist-jsx)
+const filteredWorks = works.filter((work) => work.selectedWorks === true);
+
 export default function WorkSection() {
-  const filteredWorks = works.filter((work) => work.selectedWorks === true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const handleExpand = useCallback((id: number) => {
+    setExpandedId(id);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setExpandedId(null);
+  }, []);
 
   return (
     <section className="flex flex-col gap-1.5 w-full max-w-300 mx-auto">
@@ -21,9 +31,8 @@ export default function WorkSection() {
             key={work.id}
             work={work}
             isExpanded={expandedId === work.id}
-            isAnyExpanded={expandedId !== null}
-            onExpand={() => setExpandedId(work.id)}
-            onClose={() => setExpandedId(null)}
+            onExpand={handleExpand}
+            onClose={handleClose}
           />
         ))}
       </motion.div>

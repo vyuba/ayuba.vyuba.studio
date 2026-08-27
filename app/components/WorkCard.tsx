@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, memo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Work } from "../data/work";
 import { motion } from "framer-motion";
@@ -11,17 +11,28 @@ interface WorkCardProps {
   aspectRatio?: "portrait" | "landscape" | string;
   className?: string;
   isExpanded?: boolean;
-  isAnyExpanded?: boolean;
-  onExpand?: () => void;
+  onExpand?: (id: number) => void;
   onClose?: () => void;
 }
 
-export default function WorkCard({
+function getHeightClass(ratio: string): string {
+  const isLandscape =
+    ratio === "landscape" ||
+    ratio === "16/10" ||
+    ratio === "16/9" ||
+    ratio === "4/3" ||
+    ratio === "wide";
+
+  return isLandscape
+    ? "aspect-[4/3] md:aspect-auto md:h-[363px]"
+    : "aspect-[3/4] md:aspect-auto md:h-[445px]";
+}
+
+function WorkCardComponent({
   work,
   aspectRatio,
   className = "",
   isExpanded = false,
-  isAnyExpanded = false,
   onExpand,
   onClose,
 }: WorkCardProps) {
@@ -31,18 +42,9 @@ export default function WorkCard({
   const [scaleFactor, setScaleFactor] = useState(1);
 
   const ratio = aspectRatio || work.aspectRatio || "portrait";
-  const isLandscape =
-    ratio === "landscape" ||
-    ratio === "16/10" ||
-    ratio === "16/9" ||
-    ratio === "4/3" ||
-    ratio === "wide";
+  const heightClass = getHeightClass(ratio);
 
-  const heightClass = isLandscape
-    ? "aspect-[4/3] md:aspect-auto md:h-[363px]"
-    : "aspect-[3/4] md:aspect-auto md:h-[445px]";
-
-  const openCard = () => {
+  const openCard = useCallback(() => {
     if (cardRef.current) {
       const rect = cardRef.current.getBoundingClientRect();
       setDimensions({ width: rect.width, height: rect.height });
@@ -53,12 +55,8 @@ export default function WorkCard({
       const scaleY = targetHeight / rect.height;
       setScaleFactor(Math.min(scaleX, scaleY));
     }
-    if (onExpand) onExpand();
-  };
-
-  const closeCard = useCallback(() => {
-    if (onClose) onClose();
-  }, [onClose]);
+    if (onExpand) onExpand(work.id);
+  }, [onExpand, work.id]);
 
   const handleClick = (e: React.MouseEvent) => {
     if (isExpanded) return;
@@ -75,8 +73,6 @@ export default function WorkCard({
     }
   };
 
-  // Escape key and overflow handling moved to PortalOverlay
-
   return (
     <>
       <article
@@ -85,7 +81,7 @@ export default function WorkCard({
       >
         {/* Placeholder slot in grid */}
         <div className={`w-full ${heightClass}`} onClick={handleClick}>
-          {!isExpanded && (
+          {!isExpanded ? (
             <motion.div
               layoutId={`work-card-${work.id}`}
               ref={cardRef}
@@ -93,11 +89,11 @@ export default function WorkCard({
             >
               {/* Collapsed Card view */}
             </motion.div>
-          )}
+          ) : null}
         </div>
       </article>
 
-      <PortalOverlay isOpen={isExpanded} onClose={closeCard}>
+      <PortalOverlay isOpen={isExpanded} onClose={onClose || (() => {})}>
         <motion.div
           layoutId={`work-card-${work.id}`}
           className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 overflow-hidden shadow-2xl pointer-events-auto"
@@ -120,3 +116,6 @@ export default function WorkCard({
     </>
   );
 }
+
+const WorkCard = memo(WorkCardComponent);
+export default WorkCard;

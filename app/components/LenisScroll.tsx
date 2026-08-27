@@ -1,6 +1,5 @@
 "use client";
 
-import Lenis from "lenis";
 import { useEffect } from "react";
 
 export default function LenisScrollInit({
@@ -9,23 +8,36 @@ export default function LenisScrollInit({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      smoothWheel: true,
+    let lenisInstance: import("lenis").default | null = null;
+    let rafId: number | null = null;
+    let isDestroyed = false;
+
+    import("lenis").then(({ default: Lenis }) => {
+      if (isDestroyed) return;
+
+      lenisInstance = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        smoothWheel: true,
+      });
+
+      function raf(time: number) {
+        lenisInstance?.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+
+      rafId = requestAnimationFrame(raf);
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
     return () => {
-      lenis.destroy();
+      isDestroyed = true;
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      lenisInstance?.destroy();
     };
   }, []);
+
   return children;
 }

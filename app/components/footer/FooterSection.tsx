@@ -1,8 +1,23 @@
 import { NavLinks } from "@/app/data/constant";
 
+// Hoisted static Beta Lightning Icon SVG (rendering-hoist-jsx)
+const BetaLightningIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="currentColor"
+      d="m13 2l.018.001l.016.001l.083.005l.011.002h.011l.038.009l.052.008l.016.006l.011.001l.029.011l.052.014l.019.009l.015.004l.028.014l.04.017l.021.012l.022.01l.023.015l.031.017l.034.024l.018.011l.013.012l.024.017l.038.034l.022.017l.008.01l.014.012l.036.041l.026.027l.006.009c.12.147.196.322.218.513l.001.012l.002.041L14 3v6h5a1 1 0 0 1 .868 1.497l-.06.091l-8 11C11.24 22.371 10 21.968 10 21v-6H5a1 1 0 0 1-.868-1.497l.06-.091l8-11l.01-.013l.018-.024l.033-.038l.018-.022l.009-.008l.013-.014l.04-.036l.028-.026l.008-.006a1 1 0 0 1 .402-.199l.011-.001l.027-.005l.074-.013l.011-.001l.041-.002z"
+    />
+  </svg>
+);
+
 export default function Footer() {
   return (
-    <footer className="w-full py-5 flex flex-col gap-10">
+    <footer className="w-full py-5 flex flex-col gap-10 [content-visibility:auto] [contain-intrinsic-size:0_300px]">
       <div className="w-full max-w-4xl mx-auto min-h-52 bg-[#F5F5F5] rounded-md p-5 flex flex-wrap gap-10 justify-between">
         <nav className="flex flex-col gap-2">
           <p className="text-black font-mono text-sm uppercase font-medium">
@@ -12,21 +27,7 @@ export default function Footer() {
             {NavLinks.menu.map((item) => (
               <li key={item.id} className="flex items-center">
                 {item.title}
-                {item.beta ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="m13 2l.018.001l.016.001l.083.005l.011.002h.011l.038.009l.052.008l.016.006l.011.001l.029.011l.052.014l.019.009l.015.004l.028.014l.04.017l.021.012l.022.01l.023.015l.031.017l.034.024l.018.011l.013.012l.024.017l.038.034l.022.017l.008.01l.014.012l.036.041l.026.027l.006.009c.12.147.196.322.218.513l.001.012l.002.041L14 3v6h5a1 1 0 0 1 .868 1.497l-.06.091l-8 11C11.24 22.371 10 21.968 10 21v-6H5a1 1 0 0 1-.868-1.497l.06-.091l8-11l.01-.013l.018-.024l.033-.038l.018-.022l.009-.008l.013-.014l.04-.036l.028-.026l.008-.006a1 1 0 0 1 .402-.199l.011-.001l.027-.005l.074-.013l.011-.001l.041-.002z"
-                    />
-                  </svg>
-                ) : (
-                  ""
-                )}
+                {item.beta ? BetaLightningIcon : null}
               </li>
             ))}
           </ul>
@@ -39,21 +40,7 @@ export default function Footer() {
             {NavLinks.footer.map((item) => (
               <li key={item.id} className="flex items-center">
                 {item.title}
-                {item.beta ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="m13 2l.018.001l.016.001l.083.005l.011.002h.011l.038.009l.052.008l.016.006l.011.001l.029.011l.052.014l.019.009l.015.004l.028.014l.04.017l.021.012l.022.01l.023.015l.031.017l.034.024l.018.011l.013.012l.024.017l.038.034l.022.017l.008.01l.014.012l.036.041l.026.027l.006.009c.12.147.196.322.218.513l.001.012l.002.041L14 3v6h5a1 1 0 0 1 .868 1.497l-.06.091l-8 11C11.24 22.371 10 21.968 10 21v-6H5a1 1 0 0 1-.868-1.497l.06-.091l8-11l.01-.013l.018-.024l.033-.038l.018-.022l.009-.008l.013-.014l.04-.036l.028-.026l.008-.006a1 1 0 0 1 .402-.199l.011-.001l.027-.005l.074-.013l.011-.001l.041-.002z"
-                    />
-                  </svg>
-                ) : (
-                  ""
-                )}
+                {item.beta ? BetaLightningIcon : null}
               </li>
             ))}
           </ul>
