@@ -43,12 +43,11 @@ const works: Work[] = [
     caseStudyUrl: "https://example.com/project1",
     description:
       "A premier creative agency and digital brand platform built with Next.js, Shopify, and bespoke motion design.",
-    backgroundImage:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg",
     centerMedia: {
-      type: "video",
-      url: "https://www.w3schools.com/html/mov_bbb.mp4",
-      aspectRatio: "16/9",
+      type: "image",
+      url: "/works/mejimeji.co/mejimeji-center-media.png",
+      aspectRatio: "9/16",
     },
   },
   {
@@ -71,27 +70,11 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "A minimal productivity workspace tool designed to eliminate distractions and streamline daily dev workflows.",
-  },
-  {
-    id: 3,
-    link: "https://example.com/project2",
-    bannerImage: "/images/project2-banner.jpg",
-    title: "verdiskin store",
-    type: "E-commerce",
-    skills: ["Figma", "Javascript", "Liquid", "Shopify"],
-    selectedWorks: true,
-    commingSoon: false,
-    liveLink: "https://example.com",
-    aspectRatio: "portrait",
-    hasCaseStudy: true,
-    caseStudyUrl: "https://example.com/project2",
-    description:
-      "High-conversion bespoke Shopify storefront engineered for skincare brand storytelling and fast checkout.",
-    backgroundImage:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    backgroundImage: "/works/alami-capital.com/alami-capital-background.jpg",
     centerMedia: {
       type: "video",
-      url: "https://www.w3schools.com/html/mov_bbb.mp4",
+      url: "/works/alami-capital.com/alami-capital-center-media.mov",
+      aspectRatio: "16/9",
     },
   },
   {
@@ -112,7 +95,7 @@ const works: Work[] = [
     centerMedia: {
       type: "video",
       url: "/works/shopatunruly.com/shopatunruly-center-media.mov",
-      aspectRatio: "9/16",
+      aspectRatio: "16/9",
     },
   },
   {
@@ -129,27 +112,12 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
-    backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png",
+    backgroundImage: "/works/verdiskin.com/verdiskin-background.png",
     centerMedia: {
-      type: "video",
-      url: "/works/shopatunruly.com/shopatunruly-center-media.mov",
+      type: "image",
+      url: "/works/verdiskin.com/verdiskin-center-media.png",
+      aspectRatio: "16/9",
     },
-  },
-  {
-    id: 6,
-    link: "https://example.com/project2",
-    bannerImage: "/images/project2-banner.jpg",
-    title: "Alami Capital",
-    type: "Law Firm",
-    skills: ["Figma", "Javascript", "Liquid", "Shopify"],
-    selectedWorks: true,
-    commingSoon: false,
-    liveLink: "https://example.com",
-    aspectRatio: "portrait",
-    hasCaseStudy: true,
-    caseStudyUrl: "https://example.com/project2",
-    description:
-      "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
   },
   {
     id: 7,
@@ -165,6 +133,7 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
+    backgroundImage: "/works/usecomos.com/usecomos-background.png",
   },
   {
     id: 8,
@@ -180,21 +149,12 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
-  },
-  {
-    id: 9,
-    link: "https://example.com/project2",
-    bannerImage: "/images/project2-banner.jpg",
-    title: "Alami Capital",
-    type: "Law Firm",
-    skills: ["Figma", "Javascript", "Liquid", "Shopify"],
-    selectedWorks: true,
-    commingSoon: false,
-    liveLink: "https://example.com",
-    aspectRatio: "landscape",
-    hasCaseStudy: false,
-    description:
-      "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
+    backgroundImage:
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    centerMedia: {
+      type: "video",
+      url: "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
   },
 ];
 

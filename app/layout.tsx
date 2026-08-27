@@ -19,21 +19,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vyuba.work"),
-  title: { default: "vyuba", template: "%s | My Site" },
+  metadataBase: new URL("https://ayuba.vyuba.studio"),
+  title: { default: "Ayuba Alexander", template: "%s | My Site" },
   description: "Engineering Meets Design",
   alternates: {
-    canonical: "https://vyuba.work",
+    canonical: "https://ayuba.vyuba.studio",
     languages: {
-      "en-US": "https://vyuba.work/en-US",
+      "en-US": "https://ayuba.vyuba.studio/en-US",
     },
   },
   openGraph: {
-    title: "vyuba",
+    title: "Ayuba Alexander",
     description: "Engineering Meets Design",
-    url: "https://vyuba.work",
-    siteName: "vyuba",
-    // images: [{ url: "https://vyuba.work/og.png" }],
+    url: "https://ayuba.vyuba.studio",
+    siteName: "Ayuba Alexander",
+    // images: [{ url: "https://ayuba.vyuba.studio/og.png" }],
   },
 };
 

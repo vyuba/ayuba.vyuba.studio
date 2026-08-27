@@ -41,6 +41,9 @@ function WorkCardComponent({
   const cardRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [scaleFactor, setScaleFactor] = useState(1);
+  const [mediaAspectRatio, setMediaAspectRatio] = useState<
+    number | string | null
+  >(work.centerMedia?.aspectRatio || null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -49,6 +52,26 @@ function WorkCardComponent({
   const magneticX = useSpring(mouseX, springConfig);
   const magneticY = useSpring(mouseY, springConfig);
 
+  const handleImageLoad = useCallback(
+    (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const img = e.currentTarget;
+      if (img.naturalWidth && img.naturalHeight) {
+        setMediaAspectRatio(img.naturalWidth / img.naturalHeight);
+      }
+    },
+    [],
+  );
+
+  const handleVideoMetadata = useCallback(
+    (e: React.SyntheticEvent<HTMLVideoElement>) => {
+      const vid = e.currentTarget;
+      if (vid.videoWidth && vid.videoHeight) {
+        setMediaAspectRatio(vid.videoWidth / vid.videoHeight);
+      }
+    },
+    [],
+  );
+
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
@@ -56,8 +79,8 @@ function WorkCardComponent({
       const centerY = rect.top + rect.height / 2;
       const offsetX = e.clientX - centerX;
       const offsetY = e.clientY - centerY;
-      mouseX.set(offsetX * 0.05);
-      mouseY.set(offsetY * 0.05);
+      mouseX.set(offsetX * 0.02);
+      mouseY.set(offsetY * 0.02);
     },
     [mouseX, mouseY],
   );
@@ -113,25 +136,32 @@ function WorkCardComponent({
               ref={cardRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
+              className="bg-[#F5F5F5] rounded-[19px]  cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
             >
               {work.backgroundImage && (
                 <Image
                   src={work.backgroundImage}
                   alt={work.title}
                   fill
-                  className="object-cover z-0"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className={`object-cover z-0 object-center ${work.centerMedia ? "scale-110 opacity-90" : ""}`}
+                  sizes="(max-width: 768px) 100vw, 100vw"
                 />
               )}
-              {work.backgroundImage && (
+              {work.centerMedia && (
                 <motion.div className="absolute inset-0 bg-black/20 z-0"></motion.div>
               )}
 
               {work.centerMedia && (
                 <motion.div
-                  style={{ x: magneticX, y: magneticY, aspectRatio: work.centerMedia.aspectRatio || "1/1" }}
-                  className="absolute inset-0 m-auto w-[50%] h-auto max-w-[250px] max-h-[70%] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
+                  style={{
+                    x: magneticX,
+                    y: magneticY,
+                    aspectRatio:
+                      mediaAspectRatio ||
+                      work.centerMedia.aspectRatio ||
+                      undefined,
+                  }}
+                  className="absolute inset-0 m-auto w-auto h-auto max-w-[85%] max-h-[70%] z-10 flex items-center justify-center pointer-events-none overflow-hidden shadow-lg "
                 >
                   {work.centerMedia.type === "video" ? (
                     <video
@@ -140,6 +170,7 @@ function WorkCardComponent({
                       loop
                       muted
                       playsInline
+                      onLoadedMetadata={handleVideoMetadata}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -147,8 +178,9 @@ function WorkCardComponent({
                       src={work.centerMedia.url}
                       alt={work.title}
                       fill
+                      onLoad={handleImageLoad}
                       className="object-cover"
-                      sizes="300px"
+                      sizes="(max-width: 768px) 100vw, 100vw"
                     />
                   )}
                 </motion.div>
@@ -182,18 +214,23 @@ function WorkCardComponent({
               src={work.backgroundImage}
               alt={work.title}
               fill
-              className="object-cover z-0"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className={`object-cover object-center z-0 ${work.centerMedia ? "scale-110 opacity-90" : ""}`}
+              sizes="(max-width: 768px) 100vw, 100vw"
             />
           )}
-          {work.backgroundImage && (
-            <div className="absolute inset-0 bg-black/20 z-0"></div>
+          {work.centerMedia && (
+            <motion.div className="absolute inset-0 bg-black/20 z-0"></motion.div>
           )}
 
           {work.centerMedia && (
             <motion.div
-              style={{ x: magneticX, y: magneticY, aspectRatio: work.centerMedia.aspectRatio || "1/1" }}
-              className="absolute inset-0 m-auto w-[50%] h-auto max-w-[250px] max-h-[70%] z-10 flex items-center justify-center pointer-events-none rounded-xl overflow-hidden shadow-lg"
+              style={{
+                x: magneticX,
+                y: magneticY,
+                aspectRatio:
+                  mediaAspectRatio || work.centerMedia.aspectRatio || undefined,
+              }}
+              className="absolute inset-0 m-auto w-auto h-auto max-w-[85%] max-h-[85%] z-10 flex items-center justify-center pointer-events-none overflow-hidden shadow-lg "
             >
               {work.centerMedia.type === "video" ? (
                 <video
@@ -202,6 +239,7 @@ function WorkCardComponent({
                   loop
                   muted
                   playsInline
+                  onLoadedMetadata={handleVideoMetadata}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -209,8 +247,9 @@ function WorkCardComponent({
                   src={work.centerMedia.url}
                   alt={work.title}
                   fill
+                  onLoad={handleImageLoad}
                   className="object-cover"
-                  sizes="300px"
+                  sizes="(max-width: 768px) 100vw, 100vw"
                 />
               )}
             </motion.div>

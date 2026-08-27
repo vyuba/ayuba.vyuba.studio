@@ -20,9 +20,9 @@ export default function WorkSection() {
   }, []);
 
   return (
-    <section className="flex flex-col gap-1.5 w-full max-w-300 mx-auto">
+    <section className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5">
       <motion.div
-        className="columns-2 md:columns-3 gap-3 w-full"
+        className="columns-1 md:columns-3 gap-3 w-full"
         animate={{ scale: expandedId ? 0.95 : 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
