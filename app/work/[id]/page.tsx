@@ -2,6 +2,7 @@
 import MediaCard from "@/app/components/MediaCard";
 import works from "@/app/data/work";
 import { motion } from "framer-motion";
+import { useState } from "react";
 const projectDetails = {
   specifics: [
     "Creative Direction",
@@ -90,6 +91,56 @@ const WorkHeader = () => {
 const WorkContent = () => {
   const getWork = (index: number) => works[index % works.length];
 
+  const [expandedId, setExpandedId] = useState<string | number | undefined>(undefined);
+  const [isNavigatingCarousel, setIsNavigatingCarousel] = useState(false);
+  const carouselIds = ["content-1", "content-2", "content-3", "content-4", "content-5", "content-6", "content-7"];
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!expandedId) return;
+    setIsNavigatingCarousel(true);
+    const idx = carouselIds.indexOf(expandedId.toString());
+    if (idx !== -1 && idx < carouselIds.length - 1) {
+      setExpandedId(carouselIds[idx + 1]);
+    } else {
+      setExpandedId(carouselIds[0]);
+    }
+  };
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!expandedId) return;
+    setIsNavigatingCarousel(true);
+    const idx = carouselIds.indexOf(expandedId.toString());
+    if (idx > 0) {
+      setExpandedId(carouselIds[idx - 1]);
+    } else {
+      setExpandedId(carouselIds[carouselIds.length - 1]);
+    }
+  };
+
+  const handleExpand = (id?: string | number) => {
+    setIsNavigatingCarousel(false);
+    setExpandedId(id);
+  };
+
+  const getMediaCardProps = (id: string) => {
+    const idx = carouselIds.indexOf(id);
+    return {
+      isExpanded: expandedId === id,
+      onExpand: handleExpand,
+      onClose: () => {
+        setIsNavigatingCarousel(false);
+        setExpandedId(undefined);
+      },
+      onNext: handleNext,
+      onPrev: handlePrev,
+      currentIndex: idx,
+      totalCount: carouselIds.length,
+      isNavigatingCarousel,
+    };
+  };
+
   return (
     <div className="w-full flex flex-col gap-5 font-inter-tight">
       {/* Case Study Media Grid */}
@@ -97,18 +148,20 @@ const WorkContent = () => {
         {/* 2 Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <MediaCard
-            id={getWork(1).id}
+            id="content-1"
             backgroundImage={getWork(1).backgroundImage}
             centerMedia={getWork(1).centerMedia}
             aspectRatio="square"
             className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-1")}
           />
           <MediaCard
-            id={getWork(2).id}
+            id="content-2"
             backgroundImage={getWork(2).backgroundImage}
             centerMedia={getWork(2).centerMedia}
             aspectRatio="square"
             className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-2")}
           />
         </div>
         <div className="grid grid-cols-1 gap-6 py-10 md:grid-cols-2 md:gap-3">
@@ -126,25 +179,28 @@ const WorkContent = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <MediaCard
-            id={getWork(1).id}
+            id="content-3"
             backgroundImage={getWork(1).backgroundImage}
             centerMedia={getWork(1).centerMedia}
             aspectRatio="square"
             className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-3")}
           />
           <MediaCard
-            id={getWork(2).id}
+            id="content-4"
             backgroundImage={getWork(2).backgroundImage}
             centerMedia={getWork(2).centerMedia}
             aspectRatio="square"
             className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-4")}
           />
           <MediaCard
-            id={getWork(2).id}
-            backgroundImage={getWork(2).backgroundImage}
-            centerMedia={getWork(2).centerMedia}
+            id="content-5"
+            backgroundImage={getWork(4).backgroundImage}
+            centerMedia={getWork(4).centerMedia}
             aspectRatio="square"
             className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-5")}
           />
         </div>
 
@@ -158,20 +214,28 @@ const WorkContent = () => {
             application utilizing modern web technologies. By integrating
             seamless interactions, compelling motion design, and a responsive
             architectural grid, we delivered an immersive digital experience
-            that unifies the brand's narrative seamlessly across all digital
+            that unifies the brand&apos;s narrative seamlessly across all digital
             platforms.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-3">
-            <MediaCard
-              id={getWork(4).id}
-              backgroundImage={getWork(4).backgroundImage}
-              centerMedia={getWork(4).centerMedia}
-              aspectRatio="landscape"
-              className="w-full h-full rounded-xl overflow-hidden"
-            />
-          </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <MediaCard
+            id="content-6"
+            backgroundImage={getWork(1).backgroundImage}
+            centerMedia={getWork(1).centerMedia}
+            aspectRatio="square"
+            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-6")}
+          />
+          <MediaCard
+            id="content-7"
+            backgroundImage={getWork(2).backgroundImage}
+            centerMedia={getWork(2).centerMedia}
+            aspectRatio="square"
+            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
+            {...getMediaCardProps("content-7")}
+          />
         </div>
       </div>
 
