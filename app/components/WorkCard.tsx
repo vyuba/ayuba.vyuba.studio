@@ -189,6 +189,21 @@ const WorkCardComponent = ({
   const magneticX = useSpring(mouseX, springConfig);
   const magneticY = useSpring(mouseY, springConfig);
 
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const cursorScaleRaw = useMotionValue(0);
+  const cursorOpacity = useMotionValue(0);
+  const cursorScale = useSpring(cursorScaleRaw, {
+    damping: 28,
+    stiffness: 500,
+  });
+
+  const cursorSpringConfig = { damping: 25, stiffness: 700 };
+  const cursorXSpring = useSpring(cursorX, cursorSpringConfig);
+  const cursorYSpring = useSpring(cursorY, cursorSpringConfig);
+
+  const hasHovered = useRef(false);
+
   const handleImageLoad = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
       const img = e.currentTarget;
@@ -218,15 +233,49 @@ const WorkCardComponent = ({
       const offsetY = e.clientY - centerY;
       mouseX.set(offsetX * 0.02);
       mouseY.set(offsetY * 0.02);
+
+      // Button width ~120px, height ~40px -> offsets: 60 and 20
+      const localX = e.clientX - rect.left - 60;
+      const localY = e.clientY - rect.top - 20;
+
+      if (!hasHovered.current) {
+        cursorXSpring.jump(localX);
+        cursorYSpring.jump(localY);
+        hasHovered.current = true;
+      }
+      cursorX.set(localX);
+      cursorY.set(localY);
     },
-    [mouseX, mouseY],
+    [mouseX, mouseY, cursorX, cursorY, cursorXSpring, cursorYSpring],
   );
 
-  const handleMouseEnter = useCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, []);
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {});
+      }
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const localX = e.clientX - rect.left - 60;
+      const localY = e.clientY - rect.top - 20;
+
+      cursorXSpring.jump(localX);
+      cursorYSpring.jump(localY);
+      cursorX.set(localX);
+      cursorY.set(localY);
+      hasHovered.current = true;
+      cursorOpacity.set(1);
+      cursorScaleRaw.set(1);
+    },
+    [
+      cursorX,
+      cursorY,
+      cursorXSpring,
+      cursorYSpring,
+      cursorOpacity,
+      cursorScaleRaw,
+    ],
+  );
 
   const handleMouseLeave = useCallback(() => {
     mouseX.set(0);
@@ -234,7 +283,11 @@ const WorkCardComponent = ({
     if (videoRef.current) {
       videoRef.current.pause();
     }
-  }, [mouseX, mouseY]);
+
+    hasHovered.current = false;
+    cursorOpacity.set(0);
+    cursorScaleRaw.set(0.8);
+  }, [mouseX, mouseY, cursorOpacity, cursorScaleRaw]);
 
   const ratio = aspectRatio || work.aspectRatio || "portrait";
   const heightClass = getHeightClass(ratio);
@@ -246,15 +299,37 @@ const WorkCardComponent = ({
   const handleClick = (e: React.MouseEvent) => {
     if (isExpanded) return;
     e.preventDefault();
-    if (work.hasCaseStudy) {
-      const destination = work.caseStudyUrl || work.link;
-      if (destination.startsWith("http")) {
-        window.open(destination, "_blank", "noopener,noreferrer");
+    if (work.hasCaseStudy && work.caseStudyUrl) {
+      if (work.caseStudyUrl.startsWith("http")) {
+        window.open(work.caseStudyUrl, "_blank", "noopener,noreferrer");
       } else {
-        router.push(destination);
+        router.push(work.caseStudyUrl);
+      }
+    } else if (work.link) {
+      if (work.link.startsWith("http")) {
+        window.open(work.link, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(work.link);
       }
     } else {
       openCard();
+    }
+  };
+
+  const handleClickExpanded = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (work.hasCaseStudy && work.caseStudyUrl) {
+      if (work.caseStudyUrl.startsWith("http")) {
+        window.open(work.caseStudyUrl, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(work.caseStudyUrl);
+      }
+    } else if (work.link) {
+      if (work.link.startsWith("http")) {
+        window.open(work.link, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(work.link);
+      }
     }
   };
 
@@ -286,6 +361,7 @@ const WorkCardComponent = ({
               whileHover="hover"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
               className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
             >
               {work.backgroundImage && (
@@ -346,21 +422,28 @@ const WorkCardComponent = ({
                   >
                     {work.title}
                   </motion.h2>
-
-                  <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
-                    <motion.div
-                      variants={firstArrowVariants}
-                      className="absolute inset-0 flex items-center justify-center"
-                    >
-                      <ArrowDiagonalIcon className="size-4" />
-                    </motion.div>
-                    <motion.div
-                      variants={secondArrowVariants}
-                      className="absolute inset-0 flex items-center justify-center"
-                    >
-                      <ArrowDiagonalIcon className="size-4" />
-                    </motion.div>
-                  </motion.div>
+                  {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
+                      <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
+                        <motion.button
+                          aria-label={
+                            work.caseStudyUrl ? "Case study" : "LiveLink"
+                          }
+                          variants={firstArrowVariants}
+                          className="absolute inset-0 flex items-center justify-center"
+                        >
+                          <ArrowDiagonalIcon className="size-4" />
+                        </motion.button>
+                        <motion.button
+                          aria-label={
+                            work.caseStudyUrl ? "Live Link" : "Case study"
+                          }
+                          variants={secondArrowVariants}
+                          className="absolute inset-0 flex items-center justify-center"
+                        >
+                          <ArrowDiagonalIcon className="size-4" />
+                        </motion.button>
+                      </motion.div>
+                    ))}
                 </div>
                 <motion.div
                   variants={skillsContainerVariants}
@@ -381,6 +464,23 @@ const WorkCardComponent = ({
                     })}
                 </motion.div>
               </motion.div>
+
+              {/* Custom Hover Cursor */}
+              <motion.div
+                className="pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
+                style={{
+                  x: cursorXSpring,
+                  y: cursorYSpring,
+                  scale: cursorScale,
+                  opacity: cursorOpacity,
+                }}
+              >
+                {work.hasCaseStudy && work.caseStudyUrl
+                  ? "View Case Study"
+                  : work.link
+                    ? "View Live Link"
+                    : "Open Modal"}
+              </motion.div>
             </motion.div>
           ) : null}
         </div>
@@ -393,8 +493,10 @@ const WorkCardComponent = ({
               !isNavigatingCarousel ? `work-card-${work.id}` : undefined
             }
             className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden shadow-2xl pointer-events-auto"
+            onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClickExpanded}
             style={{
               width: dimensions.width || 0,
               height: dimensions.height || 0,
@@ -473,22 +575,46 @@ const WorkCardComponent = ({
                 <motion.h2 className="rounded-full bg-[#fbfbfb] text-black/70 px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight">
                   {work.title}
                 </motion.h2>
-
-                <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
-                  <motion.div
-                    variants={firstArrowVariants}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <ArrowDiagonalIcon className="size-4" />
-                  </motion.div>
-                  <motion.div
-                    variants={secondArrowVariants}
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <ArrowDiagonalIcon className="size-4" />
-                  </motion.div>
-                </motion.div>
+                {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
+                  <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
+                      <motion.button
+                        aria-label={
+                          work.caseStudyUrl ? "Case study" : "LiveLink"
+                        }
+                        variants={firstArrowVariants}
+                        className="absolute inset-0 flex items-center justify-center"
+                      >
+                        <ArrowDiagonalIcon className="size-4" />
+                      </motion.button>
+                      <motion.button
+                        aria-label={
+                          work.caseStudyUrl ? "Live Link" : "Case study"
+                        }
+                        variants={secondArrowVariants}
+                        className="absolute inset-0 flex items-center justify-center"
+                      >
+                        <ArrowDiagonalIcon className="size-4" />
+                      </motion.button>
+                    </motion.div>
+                  ))}
               </div>
+            </motion.div>
+
+            {/* Custom Hover Cursor */}
+            <motion.div
+              className="pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
+              style={{
+                x: cursorXSpring,
+                y: cursorYSpring,
+                scale: cursorScale,
+                opacity: cursorOpacity,
+              }}
+            >
+              {work.hasCaseStudy && work.caseStudyUrl
+                ? "View Case Study"
+                : work.link
+                  ? "View Live Link"
+                  : "Open Modal"}
             </motion.div>
           </motion.div>
           {/* Carousel Controls */}
