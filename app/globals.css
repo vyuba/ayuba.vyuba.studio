@@ -9,6 +9,7 @@
   --background: #fbfbfb;
   --foreground: #171717;
   --font-braille: "Braille", sans-serif;
+  --primary: #5c88da;
 }
 
 @theme inline {
@@ -31,6 +32,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--foreground);
 }
 
 ::-webkit-scrollbar {

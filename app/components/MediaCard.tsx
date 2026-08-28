@@ -174,5 +174,5 @@ function WorkMediaCardComponent({
   );
 }
 
-const WorkMediaCard = memo(WorkMediaCardComponent);
-export default WorkMediaCard;
+const MediaCard = memo(WorkMediaCardComponent);
+export default MediaCard;

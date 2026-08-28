@@ -1,12 +1,6 @@
 import WorkSection from "./components/WorkSection";
-// import ArticleSection from "./components/ArticleSection";
-// import Footer from "./components/footer/FooterSection";
-// import PlaygroundSection from "./components/PlaygroundSection";
-// import Navbar from "./components/Navbar";
+
 import Header from "./components/Header";
-// import Footer from "./components/footer/FooterSection";
-// import PlaygroundSection from "./components/PlaygroundSection";
-// import Footer from "./components/footer/FooterSection";
 
 export default function Home() {
   return (

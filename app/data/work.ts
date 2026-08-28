@@ -42,7 +42,7 @@ const works: Work[] = [
     hasCaseStudy: true,
     caseStudyUrl: "https://example.com/project1",
     description:
-      "A premier creative agency and digital brand platform built with Next.js, Shopify, and bespoke motion design.",
+      "I was brought in by Amzora Automation to help make their operational scale visible and legible. The initial focus was on warehouse and operations design, shaping how the physical infrastructure, workflows, and systems were presented to reflect efficiency, credibility, and readiness to scale.As the work progressed, my involvement naturally expanded beyond spatial and visual execution into brand and growth leadership.",
     backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg",
     centerMedia: {
       type: "image",
