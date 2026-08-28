@@ -324,7 +324,7 @@ function WorkMediaCardComponent({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="absolute -bottom-40 left-0 right-0 flex justify-center items-center gap-4 z-50 pointer-events-auto"
+              className="fixed bottom-[10vh] left-0 right-0 flex justify-center items-center gap-4 z-50 pointer-events-auto"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}

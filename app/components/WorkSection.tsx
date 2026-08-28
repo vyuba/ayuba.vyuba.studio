@@ -10,14 +10,41 @@ const filteredWorks = works.filter((work) => work.selectedWorks === true);
 
 export default function WorkSection() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [isNavigatingCarousel, setIsNavigatingCarousel] = useState(false);
 
   const handleExpand = useCallback((id: number) => {
+    setIsNavigatingCarousel(false);
     setExpandedId(id);
   }, []);
 
   const handleClose = useCallback(() => {
+    setIsNavigatingCarousel(false);
     setExpandedId(null);
   }, []);
+
+  const handleNext = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (expandedId === null) return;
+    setIsNavigatingCarousel(true);
+    const currentIndex = filteredWorks.findIndex(w => w.id === expandedId);
+    if (currentIndex !== -1 && currentIndex < filteredWorks.length - 1) {
+      setExpandedId(filteredWorks[currentIndex + 1].id);
+    } else {
+      setExpandedId(filteredWorks[0].id);
+    }
+  }, [expandedId]);
+
+  const handlePrev = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (expandedId === null) return;
+    setIsNavigatingCarousel(true);
+    const currentIndex = filteredWorks.findIndex(w => w.id === expandedId);
+    if (currentIndex > 0) {
+      setExpandedId(filteredWorks[currentIndex - 1].id);
+    } else {
+      setExpandedId(filteredWorks[filteredWorks.length - 1].id);
+    }
+  }, [expandedId]);
 
   return (
     <section id="work-section" className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5">
@@ -42,13 +69,18 @@ export default function WorkSection() {
           },
         }}
       >
-        {filteredWorks.map((work) => (
+        {filteredWorks.map((work, index) => (
           <WorkCard
             key={work.id}
             work={work}
             isExpanded={expandedId === work.id}
             onExpand={handleExpand}
             onClose={handleClose}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            currentIndex={index}
+            totalCount={filteredWorks.length}
+            isNavigatingCarousel={isNavigatingCarousel}
           />
         ))}
       </motion.div>
