@@ -23,7 +23,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ayuba.vyuba.studio"),
-  title: { default: "Ayuba Alexander", template: "%s | My Site" },
+  title: {
+    default: "Engineer x Designer Ayuba Alexander",
+    template: "%s | - Engineer x Designer Ayuba Alexander",
+  },
   description: "Engineering Meets Design",
   alternates: {
     canonical: "https://ayuba.vyuba.studio",
@@ -32,10 +35,10 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Ayuba Alexander",
+    title: "Engineer x Designer Ayuba Alexander",
     description: "Engineering Meets Design",
     url: "https://ayuba.vyuba.studio",
-    siteName: "Ayuba Alexander",
+    siteName: "Engineer x Designer Ayuba Alexander",
     // images: [{ url: "https://ayuba.vyuba.studio/og.png" }],
   },
 };

@@ -1,16 +1,27 @@
 "use client";
 
-import { memo, useState, useEffect, useRef, useCallback } from "react";
+import { memo, useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 import { NavLinks } from "../data/constant";
 import works from "../data/work";
 
+// Hoisted static transition (rendering-hoist-jsx)
 const navTransition: Transition = {
   duration: 0.3,
   ease: [0, 0, 1, 1],
 };
+
+// Hoisted O(1) lookup map for works (js-index-maps / js-combine-iterations)
+const worksMap = new Map<string, (typeof works)[number]>();
+for (let i = 0; i < works.length; i++) {
+  const w = works[i];
+  if (w.slug) worksMap.set(w.slug.toLowerCase(), w);
+  worksMap.set(String(w.id), w);
+  worksMap.set(w.title.toLowerCase().replace(/\s+/g, "-"), w);
+  if (w.caseStudyUrl) worksMap.set(w.caseStudyUrl.toLowerCase(), w);
+}
 
 function NavbarComponent() {
   const pathname = usePathname();
@@ -20,64 +31,66 @@ function NavbarComponent() {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeReappeared, setActiveReappeared] = useState(false);
+
   const navRef = useRef<HTMLDivElement>(null);
+  const isNearRef = useRef(false);
+  const rafIdRef = useRef<number | null>(null);
+  const cachedRectRef = useRef<DOMRect | null>(null);
 
-  // Check if currently on a work case study detail page (/work/[id])
-  const isWorkDetailPage = pathname.startsWith("/work/");
-  const currentWorkSlug = isWorkDetailPage
-    ? pathname.split("/work/")[1]?.split("/")[0]?.toLowerCase()
-    : null;
+  // Derived menu state memoization (rerender-derived-state)
+  const { menuItems, activeItem } = useMemo(() => {
+    const isWorkDetailPage = pathname.startsWith("/work/");
+    const currentWorkSlug = isWorkDetailPage
+      ? pathname.split("/work/")[1]?.split("/")[0]?.toLowerCase()
+      : null;
 
-  const currentWork = currentWorkSlug
-    ? works.find(
-        (w) =>
-          w.slug?.toLowerCase() === currentWorkSlug ||
-          String(w.id) === currentWorkSlug ||
-          w.title.toLowerCase().replace(/\s+/g, "-") === currentWorkSlug ||
-          w.caseStudyUrl?.toLowerCase() === `/work/${currentWorkSlug}`
-      )
-    : null;
+    const currentWork = currentWorkSlug ? worksMap.get(currentWorkSlug) : null;
 
-  const workTitle =
-    currentWork?.title ||
-    (currentWorkSlug
-      ? currentWorkSlug
-          .split("-")
-          .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-          .join(" ")
-      : "Work");
+    const workTitle =
+      currentWork?.title ||
+      (currentWorkSlug
+        ? currentWorkSlug
+            .split("-")
+            .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+            .join(" ")
+        : "Work");
 
-  // Dynamic menu items: swap the work tab with specific work title when on a work page
-  const menuItems = NavLinks.menu.map((item) => {
-    if (isWorkDetailPage && (item.link === "/works" || item.id === 2)) {
-      return {
-        ...item,
-        title: workTitle,
-        link: pathname,
-      };
-    }
-    return item;
-  });
+    const items = NavLinks.menu.map((item) => {
+      if (isWorkDetailPage && (item.link === "/works" || item.id === 2)) {
+        return {
+          ...item,
+          title: workTitle,
+          link: pathname,
+        };
+      }
+      return item;
+    });
 
-  // Determine active item from pathname or fallback
-  const activeItem = isWorkDetailPage
-    ? menuItems.find((item) => item.link === pathname) || menuItems[1]
-    : menuItems.find((item) => {
-        if (item.link === "/") return pathname === "/";
-        return pathname.startsWith(item.link);
-      }) || menuItems[0];
+    const active = isWorkDetailPage
+      ? items.find((item) => item.link === pathname) || items[1]
+      : items.find((item) => {
+          if (item.link === "/") return pathname === "/";
+          return pathname.startsWith(item.link);
+        }) || items[0];
 
-  // Screen resize check
+    return { menuItems: items, activeItem: active };
+  }, [pathname]);
+
+  // Derived media query listener instead of continuous resize events (rerender-derived-state)
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+    const mql = window.matchMedia("(max-width: 767px)");
+    const updateMobile = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobile(e.matches);
+      if (!e.matches) {
+        setMobileMenuOpen(false);
+      }
     };
-    handleResize();
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
+    updateMobile(mql);
+    mql.addEventListener("change", updateMobile);
+    return () => mql.removeEventListener("change", updateMobile);
   }, []);
 
-  // Scroll listener (> 50px)
+  // Passive scroll listener (client-passive-event-listeners)
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY;
@@ -92,37 +105,66 @@ function NavbarComponent() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Proximity detection for cursor approaching navbar on desktop
+  const updateCachedRect = useCallback(() => {
+    if (navRef.current) {
+      cachedRectRef.current = navRef.current.getBoundingClientRect();
+    }
+  }, []);
+
+  // Proximity detection for cursor on desktop with rAF throttling & cached rect (js-batch-dom-css / client-passive-event-listeners)
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (isMobile) return;
 
-      if (!navRef.current) {
-        setIsNear(e.clientY < 90);
-        return;
-      }
+      if (rafIdRef.current !== null) return;
 
-      const rect = navRef.current.getBoundingClientRect();
-      const proximityY = 85;
-      const proximityX = 80;
+      rafIdRef.current = requestAnimationFrame(() => {
+        rafIdRef.current = null;
 
-      const isCloseY =
-        e.clientY >= Math.max(0, rect.top - proximityY) &&
-        e.clientY <= rect.bottom + proximityY;
-      const isCloseX =
-        e.clientX >= rect.left - proximityX &&
-        e.clientX <= rect.right + proximityX;
+        let rect = cachedRectRef.current;
+        if (!rect && navRef.current) {
+          rect = navRef.current.getBoundingClientRect();
+          cachedRectRef.current = rect;
+        }
 
-      const near = (isCloseY && isCloseX) || e.clientY <= 75;
-      setIsNear(near);
+        let near = false;
+        if (rect) {
+          const proximityY = 85;
+          const proximityX = 80;
+          const isCloseY =
+            e.clientY >= Math.max(0, rect.top - proximityY) &&
+            e.clientY <= rect.bottom + proximityY;
+          const isCloseX =
+            e.clientX >= rect.left - proximityX &&
+            e.clientX <= rect.right + proximityX;
+          near = (isCloseY && isCloseX) || e.clientY <= 75;
+        } else {
+          near = e.clientY < 90;
+        }
+
+        if (isNearRef.current !== near) {
+          isNearRef.current = near;
+          setIsNear(near);
+        }
+      });
     },
-    [isMobile]
+    [isMobile],
   );
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [handleMouseMove]);
+    window.addEventListener("scroll", updateCachedRect, { passive: true });
+    window.addEventListener("resize", updateCachedRect, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", updateCachedRect);
+      window.removeEventListener("resize", updateCachedRect);
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
+  }, [handleMouseMove, updateCachedRect]);
 
   // Collapse state:
   // - On desktop: collapsed when scrolled past 50px AND cursor is NOT near or hovering navbar
@@ -133,16 +175,14 @@ function NavbarComponent() {
 
   // Active link animates out alongside all items, then reappears shortly after
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isCollapsed) {
+    if (!isCollapsed) return;
+    const timer = setTimeout(() => {
+      setActiveReappeared(true);
+    }, 250);
+    return () => {
+      clearTimeout(timer);
       setActiveReappeared(false);
-      timer = setTimeout(() => {
-        setActiveReappeared(true);
-      }, 250);
-    } else {
-      setActiveReappeared(false);
-    }
-    return () => clearTimeout(timer);
+    };
   }, [isCollapsed]);
 
   return (
@@ -155,6 +195,7 @@ function NavbarComponent() {
       >
         <motion.nav
           layout
+          aria-label="Main Navigation"
           transition={navTransition}
           className="bg-[#c6c6c6]/30 backdrop-blur-md flex items-center max-w-fit font-inter-tight capitalize p-0.5 rounded-full text-black/70 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-white/20"
         >
@@ -184,7 +225,9 @@ function NavbarComponent() {
                     }}
                     animate={{
                       opacity: isHiddenDuringCollapse ? 0 : 1,
-                      filter: isHiddenDuringCollapse ? "blur(8px)" : "blur(0px)",
+                      filter: isHiddenDuringCollapse
+                        ? "blur(8px)"
+                        : "blur(0px)",
                       scale: 1,
                     }}
                     exit={{
@@ -197,6 +240,7 @@ function NavbarComponent() {
                   >
                     <Link
                       href={item.link}
+                      aria-current={isActive ? "page" : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`px-2.5 py-0.5 cursor-pointer flex whitespace-nowrap items-center bg-white rounded-full transition-colors duration-200 ${
                         isActive
@@ -273,6 +317,8 @@ function NavbarComponent() {
         <AnimatePresence>
           {isMobile && mobileMenuOpen && (
             <motion.div
+              role="menu"
+              aria-label="Mobile Navigation"
               initial={{
                 opacity: 0,
                 y: -8,
@@ -300,6 +346,7 @@ function NavbarComponent() {
                   <Link
                     key={item.id}
                     href={item.link}
+                    aria-current={isActive ? "page" : undefined}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`px-3 py-1.5 rounded-xl font-inter-tight text-sm flex items-center justify-between transition-colors ${
                       isActive

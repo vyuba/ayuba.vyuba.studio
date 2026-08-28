@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import MediaCard from "@/app/components/MediaCard";
 import { CaseStudyData, CaseStudyMediaItem } from "@/lib/works";
 import ArrowIcon from "@/app/components/icons/ArrowIcon";
+import { ArrowDiagonalIcon } from "@shopify/polaris-icons";
 
 interface WorkDetailViewProps {
   caseStudy: CaseStudyData;
@@ -40,29 +41,35 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
   );
   const [isNavigatingCarousel, setIsNavigatingCarousel] = useState(false);
 
-  const handleNext = useCallback((e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    if (!expandedId) return;
-    setIsNavigatingCarousel(true);
-    const idx = carouselIds.indexOf(expandedId.toString());
-    if (idx !== -1 && idx < carouselIds.length - 1) {
-      setExpandedId(carouselIds[idx + 1]);
-    } else {
-      setExpandedId(carouselIds[0]);
-    }
-  }, [carouselIds, expandedId]);
+  const handleNext = useCallback(
+    (e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      if (!expandedId) return;
+      setIsNavigatingCarousel(true);
+      const idx = carouselIds.indexOf(expandedId.toString());
+      if (idx !== -1 && idx < carouselIds.length - 1) {
+        setExpandedId(carouselIds[idx + 1]);
+      } else {
+        setExpandedId(carouselIds[0]);
+      }
+    },
+    [carouselIds, expandedId],
+  );
 
-  const handlePrev = useCallback((e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    if (!expandedId) return;
-    setIsNavigatingCarousel(true);
-    const idx = carouselIds.indexOf(expandedId.toString());
-    if (idx > 0) {
-      setExpandedId(carouselIds[idx - 1]);
-    } else {
-      setExpandedId(carouselIds[carouselIds.length - 1]);
-    }
-  }, [carouselIds, expandedId]);
+  const handlePrev = useCallback(
+    (e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      if (!expandedId) return;
+      setIsNavigatingCarousel(true);
+      const idx = carouselIds.indexOf(expandedId.toString());
+      if (idx > 0) {
+        setExpandedId(carouselIds[idx - 1]);
+      } else {
+        setExpandedId(carouselIds[carouselIds.length - 1]);
+      }
+    },
+    [carouselIds, expandedId],
+  );
 
   const handleClose = useCallback(() => {
     setIsNavigatingCarousel(false);
@@ -114,7 +121,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
   return (
     <div className="w-full flex flex-col items-center justify-center bg-[#FBFBFB] max-w-300 mx-auto px-4 py-8">
       {/* Back to works button */}
-      <div className="w-full flex items-center justify-between mb-8">
+      <div className="w-full flex items-center justify-between mb-4">
         <Link
           href="/"
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#c6c6c6]/40 text-black/80 hover:text-black hover:border-black/30 transition-colors text-xs font-inter-tight font-medium shadow-2xs"
@@ -122,7 +129,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
           <span className="rotate-180 flex items-center justify-center size-3 text-black">
             <ArrowIcon />
           </span>
-          Back to works
+          <span>Back</span>
         </Link>
       </div>
 
@@ -154,9 +161,28 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
         )}
 
         <div className="w-full max-w-4xl text-center flex flex-col gap-3">
-          <h1 className="self-center text-black py-0.5 px-3 font-inter-tight bg-white rounded-full text-base border-2 border-[#c6c6c6]/30">
-            {caseStudy.title}
-          </h1>
+          <div className="self-center flex items-center justify-center gap-1">
+            <h1 className="self-center text-black py-0.5 px-3 font-inter-tight bg-white rounded-full text-base border-2 border-[#c6c6c6]/30">
+              {caseStudy.title}
+            </h1>
+            {caseStudy.liveUrl ? (
+              <Link
+                aria-label={`View LiveLink: ${caseStudy.title}`}
+                className="flex items-center justify-center size-8 border-2 border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden  transition-colors"
+                href={caseStudy.liveUrl}
+                target={
+                  caseStudy.liveUrl.startsWith("http") ? "_blank" : undefined
+                }
+                rel={
+                  caseStudy.liveUrl.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
+              >
+                <ArrowDiagonalIcon className="size-4 text-current" />
+              </Link>
+            ) : null}
+          </div>
 
           {caseStudy.specifics && caseStudy.specifics.length > 0 && (
             <ul className="text-sm flex flex-wrap gap-1 self-center justify-center">

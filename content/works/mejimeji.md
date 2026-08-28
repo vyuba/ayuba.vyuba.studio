@@ -3,6 +3,7 @@ slug: "mejimeji"
 title: "Meji Meji"
 type: "Fashion Ecommerce"
 summary: "Brands today often struggle with fragmented digital identities across various touchpoints, resulting in a disjointed user experience and diluted brand equity. Our client needed a cohesive, modern web presence that could break through the noise, capture audience attention, and drive meaningful engagement without sacrificing performance."
+liveUrl: "https://mejimeji.co"
 seo:
   title: "Meji Meji — Fashion E-Commerce Case Study"
   description: "Explore the Meji Meji case study: a scalable fashion e-commerce experience crafted with Shopify, Shopify Liquid, Figma fluid motion design, and responsive design systems."
@@ -24,6 +25,8 @@ technologies:
   - "CSS"
   - "Shopify"
   - "Shopify Liquid"
+  - "JavaScript"
+  - "Figma"
 credits:
   - role: "PROJECT LEAD"
     name: "Ayuba Alexander (vyuba.studio)"
@@ -37,11 +40,8 @@ headerMedia:
       type: "image"
       url: "/works/mejimeji.co/mejimeji-center-media.png"
       aspectRatio: "9/16"
-  - backgroundImage: "/works/alami-capital.com/alami-capital-background.jpg"
-    centerMedia:
-      type: "video"
-      url: "/works/alami-capital.com/alami-capital-center-media.mov"
-      aspectRatio: "16/9"
+  - backgroundImage: "/works/mejimeji.co/mejimeji-cover.png"
+    aspectRatio: "square"
   - backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png"
     centerMedia:
       type: "video"

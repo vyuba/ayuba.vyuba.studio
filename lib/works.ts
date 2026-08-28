@@ -34,6 +34,7 @@ export interface CaseStudyData {
   title: string;
   type: string;
   summary: string;
+  liveUrl?: string;
   specifics: string[];
   technologies: string[];
   credits: { role: string; name: string }[];
@@ -81,6 +82,7 @@ export function getCaseStudyBySlug(slugOrId: string): CaseStudyData | null {
     title: data.title || "",
     type: data.type || "",
     summary: data.summary || "",
+    liveUrl: data.liveUrl || undefined,
     specifics: data.specifics || [],
     technologies: data.technologies || [],
     credits: data.credits || [],
@@ -97,7 +99,8 @@ export function getWorkBySlugOrId(slugOrId: string): Work | undefined {
     return works.find((w) => w.id === numericId);
   }
   return works.find(
-    (w) => w.slug?.toLowerCase() === slugOrId.toLowerCase() ||
-           w.title.toLowerCase().replace(/\s+/g, "") === slugOrId.toLowerCase()
+    (w) =>
+      w.slug?.toLowerCase() === slugOrId.toLowerCase() ||
+      w.title.toLowerCase().replace(/\s+/g, "") === slugOrId.toLowerCase(),
   );
 }
