@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import MediaCard from "@/app/components/MediaCard";
@@ -40,8 +40,8 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
   );
   const [isNavigatingCarousel, setIsNavigatingCarousel] = useState(false);
 
-  const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleNext = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (!expandedId) return;
     setIsNavigatingCarousel(true);
     const idx = carouselIds.indexOf(expandedId.toString());
@@ -50,10 +50,10 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
     } else {
       setExpandedId(carouselIds[0]);
     }
-  };
+  }, [carouselIds, expandedId]);
 
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handlePrev = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (!expandedId) return;
     setIsNavigatingCarousel(true);
     const idx = carouselIds.indexOf(expandedId.toString());
@@ -62,22 +62,45 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
     } else {
       setExpandedId(carouselIds[carouselIds.length - 1]);
     }
-  };
+  }, [carouselIds, expandedId]);
 
-  const handleExpand = (id?: string | number) => {
+  const handleClose = useCallback(() => {
+    setIsNavigatingCarousel(false);
+    setExpandedId(undefined);
+  }, []);
+
+  const handleExpand = useCallback((id?: string | number) => {
     setIsNavigatingCarousel(false);
     setExpandedId(id);
-  };
+  }, []);
+
+  // Keyboard navigation for open modal/popover (Esc to close, ArrowLeft/ArrowRight for prev/next)
+  useEffect(() => {
+    if (!expandedId) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleClose();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleNext();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePrev();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [expandedId, handleClose, handleNext, handlePrev]);
 
   const getMediaCardProps = (id: string) => {
     const idx = carouselIds.indexOf(id);
     return {
       isExpanded: expandedId === id,
       onExpand: handleExpand,
-      onClose: () => {
-        setIsNavigatingCarousel(false);
-        setExpandedId(undefined);
-      },
+      onClose: handleClose,
       onNext: handleNext,
       onPrev: handlePrev,
       currentIndex: idx,
@@ -96,7 +119,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
           href="/"
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#c6c6c6]/40 text-black/80 hover:text-black hover:border-black/30 transition-colors text-xs font-inter-tight font-medium shadow-2xs"
         >
-          <span className="rotate-180 flex items-center justify-center size-3">
+          <span className="rotate-180 flex items-center justify-center size-3 text-black">
             <ArrowIcon />
           </span>
           Back to works
@@ -123,7 +146,6 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
                     centerMedia={media.centerMedia}
                     aspectRatio={media.aspectRatio || "portrait"}
                     className="w-full"
-                    // {...getMediaCardProps(cardId)}
                   />
                 </motion.div>
               );

@@ -5,7 +5,7 @@ type: "Fashion Ecommerce"
 summary: "Brands today often struggle with fragmented digital identities across various touchpoints, resulting in a disjointed user experience and diluted brand equity. Our client needed a cohesive, modern web presence that could break through the noise, capture audience attention, and drive meaningful engagement without sacrificing performance."
 seo:
   title: "Meji Meji — Fashion E-Commerce Case Study"
-  description: "Explore the Meji Meji case study: a scalable fashion e-commerce experience crafted with Next.js, Shopify, fluid motion design, and responsive design systems."
+  description: "Explore the Meji Meji case study: a scalable fashion e-commerce experience crafted with Shopify, Shopify Liquid, Figma fluid motion design, and responsive design systems."
   image: "/works/mejimeji.co/mejimeji-background.jpg"
   keywords:
     - "Meji Meji"
@@ -14,26 +14,23 @@ seo:
     - "Next.js Portfolio"
     - "Creative Direction"
     - "Brand & UI/UX Design"
-    - "Framer Motion"
+    - "Shopify"
 specifics:
   - "Creative Direction"
-  - "Paid Ads & Organic Content"
   - "Web Development"
-  - "Brand & UI/UX Design"
+  - "Web Brand & UI/UX Design"
   - "Project Management"
 technologies:
-  - "WebGL & Canvas"
-  - "Framer Motion"
-  - "Next.js & React"
-  - "Tailwind CSS"
+  - "CSS"
   - "Shopify"
+  - "Shopify Liquid"
 credits:
   - role: "PROJECT LEAD"
-    name: "Ayuba Vyuba"
+    name: "Ayuba Alexander (vyuba.studio)"
   - role: "DESIGN"
-    name: "Design Team"
+    name: "Barth x Ayuba (vyuba.studio)"
   - role: "DEVELOPMENT"
-    name: "Engineering Team"
+    name: "Ayuba Alexander"
 headerMedia:
   - backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg"
     centerMedia:

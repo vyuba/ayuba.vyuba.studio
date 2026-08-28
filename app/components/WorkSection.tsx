@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import works from "../data/work";
 import WorkCard from "./WorkCard";
 import { motion } from "framer-motion";
@@ -22,8 +22,8 @@ export default function WorkSection() {
     setExpandedId(null);
   }, []);
 
-  const handleNext = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleNext = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (expandedId === null) return;
     setIsNavigatingCarousel(true);
     const currentIndex = filteredWorks.findIndex(w => w.id === expandedId);
@@ -34,8 +34,8 @@ export default function WorkSection() {
     }
   }, [expandedId]);
 
-  const handlePrev = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handlePrev = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (expandedId === null) return;
     setIsNavigatingCarousel(true);
     const currentIndex = filteredWorks.findIndex(w => w.id === expandedId);
@@ -45,6 +45,27 @@ export default function WorkSection() {
       setExpandedId(filteredWorks[filteredWorks.length - 1].id);
     }
   }, [expandedId]);
+
+  // Keyboard navigation for open modal/popover (Esc to close, ArrowLeft/ArrowRight for prev/next)
+  useEffect(() => {
+    if (expandedId === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleClose();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleNext();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePrev();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [expandedId, handleClose, handleNext, handlePrev]);
 
   return (
     <section id="work-section" className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5">

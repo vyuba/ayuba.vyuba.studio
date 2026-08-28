@@ -2,25 +2,25 @@ export const NavLinks = {
   menu: [
     {
       id: 1,
-      link: "#home",
+      link: "/",
       title: "Ayuba",
       beta: false,
     },
     {
       id: 2,
-      link: "#works",
+      link: "/works",
       title: "Engineer x Designer",
       beta: true,
     },
     {
       id: 3,
-      link: "#about",
+      link: "/about",
       title: "about",
       beta: true,
     },
     {
       id: 4,
-      link: "#articles",
+      link: "/articles",
       title: "articles",
       beta: true,
     },
@@ -28,13 +28,13 @@ export const NavLinks = {
   footer: [
     {
       id: 1,
-      link: "#",
+      link: "/reading",
       title: "Reading",
       beta: true,
     },
     {
       id: 2,
-      link: "#works",
+      link: "/works",
       title: "Gallery",
       beta: true,
     },
