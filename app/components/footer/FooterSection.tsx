@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useRef, MouseEvent } from "react";
 
 const footerLinks = [
@@ -29,7 +30,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full py-5 flex flex-col justify-center gap-6 [content-visibility:auto] [contain-intrinsic-size:0_300px] min-h-[30vh] relative">
+    <footer className="w-full pt-5 pb-8 flex flex-col justify-center gap-6 [content-visibility:auto] [contain-intrinsic-size:0_300px] min-h-[30vh] relative">
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
@@ -58,7 +59,7 @@ export default function Footer() {
           Ayuba Alexander
         </h2>
       </div>
-      <ul className="flex gap-0 self-center font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full  p-0.5 relative z-10">
+      <ul className="flex gap-0 self-center font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full relative z-10">
         {footerLinks.map((link, index) => (
           <li key={index}>
             <a
@@ -70,6 +71,15 @@ export default function Footer() {
           </li>
         ))}
       </ul>
+      <motion.a
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        href={"https://cal.com/vyuba.studio/30min"}
+        className="self-center text-sm px-2.5 py-0.5 w-fit text-white cursor-pointer flex whitespace-nowrap items-center bg-black rounded-full hover:text-white transition-all"
+      >
+        Schedule a Call
+      </motion.a>
     </footer>
   );
 }

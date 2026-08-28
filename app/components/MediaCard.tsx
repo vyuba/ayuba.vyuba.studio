@@ -91,7 +91,7 @@ function WorkMediaCardComponent({
     }
   }, [isExpanded]);
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = () => {
     if (onClick) {
       onClick();
       return;

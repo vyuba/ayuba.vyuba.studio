@@ -1,262 +1,119 @@
-"use client";
-import MediaCard from "@/app/components/MediaCard";
-import works from "@/app/data/work";
-import { motion } from "framer-motion";
-import { useState } from "react";
-const projectDetails = {
-  specifics: [
-    "Creative Direction",
-    "Paid Ads & Organic Content",
-    "Web Development",
-    "Brand & UI/UX Design",
-    "Project Management",
-  ],
-  technologies: [
-    "WebGL & Canvas",
-    "Framer Motion",
-    "Next.js & React",
-    "Tailwind CSS",
-    "Sanity CMS",
-  ],
-  credits: [
-    { role: "PROJECT LEAD", name: "Austen Goodman" },
-    { role: "DESIGN", name: "Happy Miliarta, Roko Gabrilo" },
-    { role: "DEVELOPMENT", name: "Nick Cheung, Roko Gabrilo" },
-  ],
-};
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getCaseStudyBySlug, getAllCaseStudySlugs } from "@/lib/works";
+import WorkDetailView from "./WorkDetailView";
 
-const filteredWorks = works.filter((work) => work.selectedWorks === true);
-const WorkPage = () => {
-  return (
-    <div className="w-full flex flex-col items-center justify-center  bg-[#FBFBFB] max-w-300 mx-auto">
-      <WorkHeader />
-      <WorkContent />
-    </div>
-  );
-};
+export async function generateStaticParams() {
+  const slugs = getAllCaseStudySlugs();
+  return slugs.map((slug) => ({ id: slug }));
+}
 
-export default WorkPage;
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-const WorkHeader = () => {
-  return (
-    <div className="w-full flex flex-col gap-10 items-center justify-center min-h-[85dvh] h-fit relative">
-      <div className="flex gap-3 w-full">
-        {filteredWorks.slice(0, 3).map((work) => {
-          return (
-            <motion.div
-              key={work.id}
-              initial={{ backdropFilter: "blur(30px)", opacity: 0.5 }}
-              animate={{ backdropFilter: "blur(0px)", opacity: 1 }}
-              transition={{ type: "tween", duration: 0.6, damping: 0 }}
-              className="w-full md:w-1/3"
-            >
-              <MediaCard
-                id={work.id}
-                backgroundImage={work.backgroundImage}
-                centerMedia={work.centerMedia}
-                aspectRatio="portrait"
-                className="w-full"
-              />
-            </motion.div>
-          );
-        })}
-      </div>
-      <div className=" w-full max-w-4xl text-center flex flex-col gap-3">
-        <h1 className="self-center text-black cursor-pointer py-0.5 px-3 font-inter-tight bg-white rounded-full text-base border-2 border-[#c6c6c6]/30">
-          Meji Meji
-        </h1>
-        <ul className="text-sm  flex flex-wrap gap-1 self-center justify-center">
-          {projectDetails.specifics.map((item, index) => (
-            <li
-              className="bg-white w-fit border border-[#c6c6c6]/30 whitespace-nowrap rounded-full px-2.5 py-1 text-sm self-center text-center text-black font-inter-tight"
-              key={index}
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-        <p className="text-black/80  text-sm self-center font-inter-tight text-pretty ">
-          Brands today often struggle with fragmented digital identities across
-          various touchpoints, resulting in a disjointed user experience and
-          diluted brand equity. Our client needed a cohesive, modern web
-          presence that could break through the noise, capture audience
-          attention, and drive meaningful engagement without sacrificing
-          performance.
-        </p>
-      </div>
-    </div>
-  );
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const caseStudy = getCaseStudyBySlug(id);
 
-const WorkContent = () => {
-  const getWork = (index: number) => works[index % works.length];
-
-  const [expandedId, setExpandedId] = useState<string | number | undefined>(undefined);
-  const [isNavigatingCarousel, setIsNavigatingCarousel] = useState(false);
-  const carouselIds = ["content-1", "content-2", "content-3", "content-4", "content-5", "content-6", "content-7"];
-
-  const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!expandedId) return;
-    setIsNavigatingCarousel(true);
-    const idx = carouselIds.indexOf(expandedId.toString());
-    if (idx !== -1 && idx < carouselIds.length - 1) {
-      setExpandedId(carouselIds[idx + 1]);
-    } else {
-      setExpandedId(carouselIds[0]);
-    }
-  };
-
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!expandedId) return;
-    setIsNavigatingCarousel(true);
-    const idx = carouselIds.indexOf(expandedId.toString());
-    if (idx > 0) {
-      setExpandedId(carouselIds[idx - 1]);
-    } else {
-      setExpandedId(carouselIds[carouselIds.length - 1]);
-    }
-  };
-
-  const handleExpand = (id?: string | number) => {
-    setIsNavigatingCarousel(false);
-    setExpandedId(id);
-  };
-
-  const getMediaCardProps = (id: string) => {
-    const idx = carouselIds.indexOf(id);
+  if (!caseStudy) {
     return {
-      isExpanded: expandedId === id,
-      onExpand: handleExpand,
-      onClose: () => {
-        setIsNavigatingCarousel(false);
-        setExpandedId(undefined);
-      },
-      onNext: handleNext,
-      onPrev: handlePrev,
-      currentIndex: idx,
-      totalCount: carouselIds.length,
-      isNavigatingCarousel,
+      title: "Case Study Not Found",
     };
+  }
+
+  const title = caseStudy.seo?.title || `${caseStudy.title} — Case Study`;
+  const description = caseStudy.seo?.description || caseStudy.summary;
+  const image =
+    caseStudy.seo?.image ||
+    caseStudy.headerMedia?.[0]?.backgroundImage ||
+    "/works/mejimeji.co/mejimeji-background.jpg";
+  const url = `https://ayuba.vyuba.studio/work/${caseStudy.slug}`;
+
+  return {
+    title,
+    description,
+    keywords:
+      caseStudy.seo?.keywords || [
+        caseStudy.title,
+        caseStudy.type,
+        ...(caseStudy.specifics || []),
+        ...(caseStudy.technologies || []),
+      ],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: `${title} | Ayuba Alexander`,
+      description,
+      url,
+      type: "article",
+      siteName: "Ayuba Alexander",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${caseStudy.title} Case Study Preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Ayuba Alexander`,
+      description,
+      images: [image],
+    },
+  };
+}
+
+export default async function WorkPage({ params }: PageProps) {
+  const { id } = await params;
+  const caseStudy = getCaseStudyBySlug(id);
+
+  if (!caseStudy) {
+    notFound();
+  }
+
+  const title = caseStudy.seo?.title || `${caseStudy.title} — Case Study`;
+  const description = caseStudy.seo?.description || caseStudy.summary;
+  const image =
+    caseStudy.seo?.image ||
+    caseStudy.headerMedia?.[0]?.backgroundImage ||
+    "/works/mejimeji.co/mejimeji-background.jpg";
+  const url = `https://ayuba.vyuba.studio/work/${caseStudy.slug}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: caseStudy.title,
+    headline: title,
+    description,
+    url,
+    image: image.startsWith("http")
+      ? image
+      : `https://ayuba.vyuba.studio${image}`,
+    author: {
+      "@type": "Person",
+      name: "Ayuba Alexander",
+      url: "https://ayuba.vyuba.studio",
+    },
+    creator: {
+      "@type": "Person",
+      name: "Ayuba Alexander",
+    },
+    keywords: caseStudy.seo?.keywords?.join(", "),
   };
 
   return (
-    <div className="w-full flex flex-col gap-5 font-inter-tight">
-      {/* Case Study Media Grid */}
-      <div className="flex flex-col gap-4 mt-8">
-        {/* 2 Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <MediaCard
-            id="content-1"
-            backgroundImage={getWork(1).backgroundImage}
-            centerMedia={getWork(1).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-1")}
-          />
-          <MediaCard
-            id="content-2"
-            backgroundImage={getWork(2).backgroundImage}
-            centerMedia={getWork(2).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-2")}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-6 py-10 md:grid-cols-2 md:gap-3">
-          <h2 className="text-2xl font-medium text-black opacity-80  max-w-[70%]">
-            Our Breakthrough Awaits Us. Lululemon Train.
-          </h2>
-          <p className="leading-relaxed text-sm text-black">
-            Brands today often struggle with fragmented digital identities
-            across various touchpoints, resulting in a disjointed user
-            experience and diluted brand equity. Our client needed a cohesive,
-            modern web presence that could break through the noise, capture
-            audience attention, and drive meaningful engagement without
-            sacrificing performance.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <MediaCard
-            id="content-3"
-            backgroundImage={getWork(1).backgroundImage}
-            centerMedia={getWork(1).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-3")}
-          />
-          <MediaCard
-            id="content-4"
-            backgroundImage={getWork(2).backgroundImage}
-            centerMedia={getWork(2).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-4")}
-          />
-          <MediaCard
-            id="content-5"
-            backgroundImage={getWork(4).backgroundImage}
-            centerMedia={getWork(4).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-5")}
-          />
-        </div>
-
-        {/* Asymmetrical Grid: 1 large, 2 small stacked */}
-        <div className="grid grid-cols-1 gap-6 py-10 md:grid-cols-2 md:gap-3">
-          <h2 className="text-2xl font-medium text-black opacity-80  max-w-[70%]">
-            Our Breakthrough Awaits Us. Lululemon Train.
-          </h2>
-          <p className="leading-relaxed text-sm text-black">
-            We developed a unified design system and a high-performance web
-            application utilizing modern web technologies. By integrating
-            seamless interactions, compelling motion design, and a responsive
-            architectural grid, we delivered an immersive digital experience
-            that unifies the brand&apos;s narrative seamlessly across all digital
-            platforms.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <MediaCard
-            id="content-6"
-            backgroundImage={getWork(1).backgroundImage}
-            centerMedia={getWork(1).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-6")}
-          />
-          <MediaCard
-            id="content-7"
-            backgroundImage={getWork(2).backgroundImage}
-            centerMedia={getWork(2).centerMedia}
-            aspectRatio="square"
-            className="w-full h-full min-h-[40vh] rounded-xl overflow-hidden"
-            {...getMediaCardProps("content-7")}
-          />
-        </div>
-      </div>
-
-      {/* Specifics / Tech / Credits Grid */}
-      <div className="grid grid-cols-1 gap-10 p-8  font-inter-tight">
-        <div className="flex flex-col items-center gap-1 self-center ">
-          <h3 className="font-medium opacity-70 uppercase text-xs text-black/70 ml-2">
-            Technologies
-          </h3>
-          <ul className="text-sm flex flex-wrap gap-1">
-            {projectDetails.technologies.map((item, index) => (
-              <li
-                className="bg-white w-fit border border-[#c6c6c6]/30 whitespace-nowrap rounded-full px-2.5 py-1 text-sm  text-center text-black font-inter-tight"
-                key={index}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <WorkDetailView caseStudy={caseStudy} />
+    </>
   );
-};
+}

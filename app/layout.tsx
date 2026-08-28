@@ -52,8 +52,9 @@ export default function RootLayout({
       >
         <LoaderOverlay />
         <Navbar />
-        <LenisScrollInit>{children}</LenisScrollInit>
-        {/*{children}*/}
+        <LenisScrollInit>
+          <div className="z-10">{children}</div>
+        </LenisScrollInit>
         <Footer />
         <div className="bottom-page-blur pointer-events-none fixed inset-x-0 bottom-0 z-60 hidden h-20 sm:block">
           <div className="relative h-full">

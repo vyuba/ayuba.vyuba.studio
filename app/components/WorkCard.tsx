@@ -422,7 +422,8 @@ const WorkCardComponent = ({
                   >
                     {work.title}
                   </motion.h2>
-                  {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
+                  {(work.hasCaseStudy && work.caseStudyUrl) ||
+                    (work.link && (
                       <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
                         <motion.button
                           aria-label={
@@ -577,45 +578,45 @@ const WorkCardComponent = ({
                 </motion.h2>
                 {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
                   <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
-                      <motion.button
-                        aria-label={
-                          work.caseStudyUrl ? "Case study" : "LiveLink"
-                        }
-                        variants={firstArrowVariants}
-                        className="absolute inset-0 flex items-center justify-center"
-                      >
-                        <ArrowDiagonalIcon className="size-4" />
-                      </motion.button>
-                      <motion.button
-                        aria-label={
-                          work.caseStudyUrl ? "Live Link" : "Case study"
-                        }
-                        variants={secondArrowVariants}
-                        className="absolute inset-0 flex items-center justify-center"
-                      >
-                        <ArrowDiagonalIcon className="size-4" />
-                      </motion.button>
-                    </motion.div>
-                  ))}
+                    <motion.button
+                      aria-label={work.caseStudyUrl ? "Case study" : "LiveLink"}
+                      variants={firstArrowVariants}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <ArrowDiagonalIcon className="size-4" />
+                    </motion.button>
+                    <motion.button
+                      aria-label={
+                        work.caseStudyUrl ? "Live Link" : "Case study"
+                      }
+                      variants={secondArrowVariants}
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <ArrowDiagonalIcon className="size-4" />
+                    </motion.button>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
 
             {/* Custom Hover Cursor */}
-            <motion.div
-              className="pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
-              style={{
-                x: cursorXSpring,
-                y: cursorYSpring,
-                scale: cursorScale,
-                opacity: cursorOpacity,
-              }}
-            >
-              {work.hasCaseStudy && work.caseStudyUrl
-                ? "View Case Study"
-                : work.link
-                  ? "View Live Link"
-                  : "Open Modal"}
-            </motion.div>
+            {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
+              <motion.div
+                className="pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
+                style={{
+                  x: cursorXSpring,
+                  y: cursorYSpring,
+                  scale: cursorScale,
+                  opacity: cursorOpacity,
+                }}
+              >
+                {work.hasCaseStudy && work.caseStudyUrl
+                  ? "View Case Study"
+                  : work.link
+                    ? "View Live Link"
+                    : "Open Modal"}
+              </motion.div>
+            )}
           </motion.div>
           {/* Carousel Controls */}
           {(onNext || onPrev) && (
