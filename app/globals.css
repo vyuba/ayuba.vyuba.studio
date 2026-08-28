@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Braille";
+  src: url("/font/Braille-Regular.ttf");
+}
+
 :root {
   --background: #fbfbfb;
   --foreground: #171717;
+  --font-braille: "Braille", sans-serif;
 }
 
 @theme inline {
@@ -11,6 +17,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-inter-tight: var(--font-inter-tight);
+  --font-braille: var(--font-braille);
 }
 
 /* @media (prefers-color-scheme: dark) {

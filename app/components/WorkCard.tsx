@@ -149,6 +149,7 @@ function WorkCardComponent({
 }: WorkCardProps) {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [scaleFactor, setScaleFactor] = useState(1);
   const [mediaAspectRatio, setMediaAspectRatio] = useState<
@@ -195,9 +196,18 @@ function WorkCardComponent({
     [mouseX, mouseY],
   );
 
+  const handleMouseEnter = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
+
   const handleMouseLeave = useCallback(() => {
     mouseX.set(0);
     mouseY.set(0);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
   }, [mouseX, mouseY]);
 
   const ratio = aspectRatio || work.aspectRatio || "portrait";
@@ -234,9 +244,18 @@ function WorkCardComponent({
 
   return (
     <>
-      <article
+      <motion.article
         className={`group/work-card cursor-pointer w-full pb-3 ${className}`}
         key={work.id}
+        variants={{
+          hidden: { opacity: 0, scale: 1.15, y: 40 },
+          visible: {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 260, damping: 20 },
+          },
+        }}
       >
         {/* Placeholder slot in grid */}
         <div className={`w-full ${heightClass}`} onClick={handleClick}>
@@ -246,8 +265,8 @@ function WorkCardComponent({
               ref={cardRef}
               initial="initial"
               whileHover="hover"
-              // onMouseMove={handleMouseMove}
-              // onMouseLeave={handleMouseLeave}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className="bg-[#F5F5F5] rounded-[19px] cursor-pointer border-[0.5px] border-[#000000]/15 relative overflow-hidden active:scale-[0.99] w-full h-full"
             >
               {work.backgroundImage && (
@@ -277,8 +296,8 @@ function WorkCardComponent({
                 >
                   {work.centerMedia.type === "video" ? (
                     <video
+                      ref={videoRef}
                       src={work.centerMedia.url}
-                      autoPlay
                       loop
                       muted
                       playsInline
@@ -346,7 +365,7 @@ function WorkCardComponent({
             </motion.div>
           ) : null}
         </div>
-      </article>
+      </motion.article>
 
       <PortalOverlay isOpen={isExpanded} onClose={onClose || (() => {})}>
         <motion.div

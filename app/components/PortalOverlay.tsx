@@ -45,11 +45,11 @@ function PortalOverlayComponent({
   const mounted = useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  
+
   // MotionValues for cursor scale/opacity - eliminates React state re-renders on mouse movement! (rerender-defer-reads)
   const cursorScaleRaw = useMotionValue(0);
   const cursorOpacity = useMotionValue(0);
@@ -119,8 +119,9 @@ function PortalOverlayComponent({
             aria-hidden="true"
           >
             {/* Custom "X" Cursor driven directly via MotionValues (0 React re-renders) */}
-            <motion.div
-              className="pointer-events-none fixed top-0 left-0 w-12 h-12 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black cursor-pointer rounded-full flex items-center justify-center z-50"
+            <motion.button
+              aria-label="Close Overlay"
+              className="pointer-events-none fixed  top-0 left-0 w-12 h-12 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black cursor-pointer rounded-full flex items-center justify-center z-50"
               style={{
                 x: cursorXSpring,
                 y: cursorYSpring,
@@ -129,7 +130,7 @@ function PortalOverlayComponent({
               }}
             >
               {CloseIcon}
-            </motion.div>
+            </motion.button>
           </motion.div>
         ) : null}
       </AnimatePresence>
