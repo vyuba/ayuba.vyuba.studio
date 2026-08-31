@@ -68,7 +68,14 @@ export default function WorkSection() {
   }, [expandedId, handleClose, handleNext, handlePrev]);
 
   return (
-    <section id="work-section" className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5">
+    <section
+      id="work-section"
+      aria-labelledby="work-section-heading"
+      className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5"
+    >
+      <h2 id="work-section-heading" className="sr-only">
+        Selected Works & Projects — Shopify Development, Design Engineering & Frontend Case Studies
+      </h2>
       <motion.div
         className="columns-1 md:columns-3 gap-3 w-full"
         animate={{ scale: expandedId ? 0.95 : 1 }}

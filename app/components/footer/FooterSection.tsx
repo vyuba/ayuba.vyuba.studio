@@ -59,23 +59,31 @@ export default function Footer() {
           Ayuba Alexander
         </h2>
       </div>
-      <ul className="flex gap-0 p-0.5 self-center font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full relative z-10">
-        {footerLinks.map((link, index) => (
-          <li key={index}>
-            <a
-              href={link.href}
-              className="px-2.5 py-0.5 cursor-pointer flex whitespace-nowrap items-center bg-white rounded-full hover:text-black transition-all"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <nav aria-label="Social and professional profiles" className="self-center z-10">
+        <ul className="flex gap-0 p-0.5 font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full">
+          {footerLinks.map((link, index) => (
+            <li key={index}>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit Ayuba Alexander's ${link.label} profile`}
+                className="px-2.5 py-0.5 cursor-pointer flex whitespace-nowrap items-center bg-white rounded-full hover:text-black transition-all"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
       <motion.a
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        href={"https://cal.com/vyuba.studio/30min"}
+        href="https://cal.com/vyuba.studio/30min"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Schedule a 30-minute discovery call with Ayuba Alexander"
         className="self-center text-sm px-2.5 py-0.5 w-fit text-white cursor-pointer flex whitespace-nowrap items-center bg-black rounded-full hover:text-white transition-all"
       >
         Schedule a Call

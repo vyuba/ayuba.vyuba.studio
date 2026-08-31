@@ -416,12 +416,12 @@ const WorkCardComponent = ({
                 className="w-full h-full flex justify-between flex-col relative z-10"
               >
                 <div className="p-5 w-full flex justify-between items-center relative z-10">
-                  <motion.h2
+                  <motion.h3
                     variants={titleVariants}
                     className="rounded-full px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight"
                   >
                     {work.title}
-                  </motion.h2>
+                  </motion.h3>
                   {(work.hasCaseStudy && work.caseStudyUrl) ||
                     (work.link && (
                       <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
@@ -573,9 +573,9 @@ const WorkCardComponent = ({
 
             <motion.div className="w-full h-full flex justify-between flex-col relative z-10">
               <div className="p-5 w-full flex justify-between items-center relative z-10">
-                <motion.h2 className="rounded-full bg-[#fbfbfb] text-black/70 px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight">
+                <motion.h3 className="rounded-full bg-[#fbfbfb] text-black/70 px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight">
                   {work.title}
-                </motion.h2>
+                </motion.h3>
                 {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
                   <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
                     <motion.button

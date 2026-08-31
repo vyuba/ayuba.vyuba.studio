@@ -24,10 +24,43 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ayuba.vyuba.studio"),
   title: {
-    default: "Engineer x Designer Ayuba Alexander",
-    template: "%s | - Engineer x Designer Ayuba Alexander",
+    default: "Ayuba Alexander — Design Engineer & Shopify Developer",
+    template: "%s | Ayuba Alexander — Design Engineer & Shopify Developer",
   },
-  description: "Engineering Meets Design",
+  description:
+    "Ayuba Alexander (vyuba) is a Design Engineer, specialized Shopify Developer, Frontend Engineer, and Product Designer building high-performance digital commerce, scalable design systems, and intuitive web applications.",
+  keywords: [
+    "Shopify Developer",
+    "Shopify Plus Expert",
+    "Shopify Theme Developer",
+    "Shopify Liquid Engineer",
+    "Shopify POS Developer",
+    "Shopify App Developer",
+    "Design Engineer",
+    "Design Technologist",
+    "Design Systems Engineer",
+    "Frontend Developer",
+    "Senior Frontend Engineer",
+    "React Developer",
+    "Next.js Developer",
+    "Product Designer",
+    "UI/UX Designer",
+    "Interaction Designer",
+    "Web Developer",
+    "Software Engineer",
+    "Full-Stack Developer",
+    "Creative Developer",
+    "Ayuba Alexander",
+    "vyuba",
+  ],
+  authors: [{ name: "Ayuba Alexander", url: "https://ayuba.vyuba.studio" }],
+  creator: "Ayuba Alexander",
+  publisher: "Ayuba Alexander",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   alternates: {
     canonical: "https://ayuba.vyuba.studio",
     languages: {
@@ -35,11 +68,87 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Engineer x Designer Ayuba Alexander",
-    description: "Engineering Meets Design",
+    type: "website",
+    locale: "en_US",
     url: "https://ayuba.vyuba.studio",
-    siteName: "Engineer x Designer Ayuba Alexander",
-    // images: [{ url: "https://ayuba.vyuba.studio/og.png" }],
+    siteName: "Ayuba Alexander — Design Engineer & Shopify Developer",
+    title: "Ayuba Alexander — Design Engineer & Shopify Developer",
+    description:
+      "Bridging the gap between engineering, visual design, and specialized Shopify development to craft intuitive digital products and commerce experiences.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ayuba Alexander — Design Engineer & Shopify Developer",
+    description:
+      "Bridging the gap between engineering, visual design, and specialized Shopify development to craft intuitive digital products and commerce experiences.",
+    creator: "@vyuba_",
+    site: "@vyuba_",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ayuba Alexander",
+  alternateName: ["vyuba", "Alexander Preye Ayuba"],
+  url: "https://ayuba.vyuba.studio",
+  jobTitle: [
+    "Design Engineer",
+    "Shopify Developer",
+    "Frontend Developer",
+    "Product Designer",
+    "Web Developer",
+    "Software Engineer",
+  ],
+  description:
+    "Ayuba Alexander is a Design Engineer and specialized Shopify Developer building bespoke digital commerce, high-performance web applications, design systems, and intuitive product interfaces.",
+  sameAs: [
+    "https://github.com/vyuba",
+    "https://www.linkedin.com/in/alexander-preye-i-271aa7257/",
+    "https://x.com/vyuba_",
+    "https://contra.com/alexander_ayuba_preye_3fnoen2o",
+    "https://www.instagram.com/vyuba_/",
+  ],
+  knowsAbout: [
+    "Shopify Development",
+    "Shopify Liquid",
+    "Shopify POS",
+    "Shopify Apps",
+    "Design Engineering",
+    "Frontend Engineering",
+    "Product Design",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Design Systems",
+    "UI/UX Design",
+    "Framer Motion",
+    "Tailwind CSS",
+    "Web Performance",
+  ],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Ayuba Alexander — Design Engineer & Shopify Developer",
+  url: "https://ayuba.vyuba.studio",
+  description:
+    "Portfolio of Ayuba Alexander: Design Engineer, Shopify Developer, Frontend Engineer, and Product Designer.",
+  author: {
+    "@type": "Person",
+    name: "Ayuba Alexander",
   },
 };
 
@@ -50,6 +159,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable}  ${geistMono.variable} ${interTight.variable} antialiased bg-[#FBFBFB] pt-3 md:pt-18`}
       >
