@@ -43,8 +43,8 @@ body {
 }
 
 ::selection {
-  background: var(--primary);
-  color: var(--foreground);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
 }
 
 ::-webkit-scrollbar {
