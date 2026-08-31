@@ -59,7 +59,7 @@ export default function Footer() {
           Ayuba Alexander
         </h2>
       </div>
-      <ul className="flex gap-0 self-center font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full relative z-10">
+      <ul className="flex gap-0 p-0.5 self-center font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full relative z-10">
         {footerLinks.map((link, index) => (
           <li key={index}>
             <a
