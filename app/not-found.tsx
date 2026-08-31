@@ -42,24 +42,24 @@ export default function NotFound() {
       >
         <motion.span
           variants={itemVariants}
-          className="rounded-full border border-[#c6c6c6]/40 bg-white/80 px-3 py-1 font-inter-tight text-xs font-semibold uppercase tracking-wider text-black/60 backdrop-blur-md"
+          className=" bg-white/80 px-3 py-1 font-apfel text-sm font-medium uppercase tracking-wider text-black backdrop-blur-md"
         >
-          404 Error
+          Lost in the whitespace.
         </motion.span>
 
         <motion.h1
           variants={itemVariants}
-          className="font-apfel text-5xl md:text-7xl font-normal tracking-tighter text-black"
+          className="font-braille text-5xl md:text-7xl font-normal tracking-tighter text-primary"
         >
           Lost in the whitespace.
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
-          className="font-inter-tight text-base md:text-lg text-black/70 leading-relaxed max-w-md"
+          className="font-inter-tight text-sm md:text-base text-black/70 leading-relaxed max-w-md"
         >
-          Looks like this coordinate hasn&apos;t been designed or engineered yet.
-          Let&apos;s get you back on the grid.
+          Looks like this coordinate hasn&apos;t been designed or engineered
+          yet. Let&apos;s get you back on the grid.
         </motion.p>
 
         <motion.div variants={itemVariants} className="pt-2">
@@ -68,7 +68,7 @@ export default function NotFound() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="inline-flex items-center gap-2 rounded-full border-2 border-[#c6c6c6]/30 bg-white px-5 py-2 font-inter-tight text-sm font-medium text-black capitalize shadow-xs hover:border-black/30 transition-colors"
+              className="self-center cursor-pointer capitalize py-1 px-3 font-inter-tight bg-white rounded-full text-sm border-2 border-[#c6c6c6]/30"
             >
               Back to Home
             </motion.span>
