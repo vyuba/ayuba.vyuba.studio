@@ -116,14 +116,12 @@ const works: Work[] = [
   },
   {
     id: 7,
-    link: "https://example.com/project2",
     bannerImage: "/images/project2-banner.jpg",
     title: "usecomos",
     type: "SaaS",
-    skills: ["Figma", "Javascript", "Liquid", "Shopify"],
+    skills: ["Figma", "React", "Tanstack Router", "Typescript"],
     selectedWorks: true,
     commingSoon: false,
-    liveLink: "https://example.com",
     aspectRatio: "portrait",
     hasCaseStudy: false,
     description:
@@ -132,23 +130,21 @@ const works: Work[] = [
   },
   {
     id: 8,
-    link: "https://example.com/project2",
+    link: "https://1percnt.com",
     bannerImage: "/images/project2-banner.jpg",
-    title: "Demo",
-    type: "SaaS",
+    title: "1Percnt Studio",
+    type: "Creative Studio",
     skills: ["Figma", "Javascript", "Liquid", "Shopify"],
     selectedWorks: true,
     commingSoon: false,
-    liveLink: "https://example.com",
+    liveLink: "https://1percnt.com",
     aspectRatio: "landscape",
     hasCaseStudy: false,
-    description:
-      "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
-    backgroundImage:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+    description: "An independently owned production & post-production agency.",
+    backgroundImage: "/works/1percnt.com/1percnt-background.webp",
     centerMedia: {
       type: "video",
-      url: "https://www.w3schools.com/html/mov_bbb.mp4",
+      url: "/works/1percnt.com/1percnt-center-media.mov",
     },
   },
 ];
