@@ -281,9 +281,9 @@ function NavbarComponent() {
                     onClick={() => setMobileMenuOpen((prev) => !prev)}
                     aria-label="Toggle Menu"
                     aria-expanded={mobileMenuOpen}
-                    className="px-2.5 py-0.5 cursor-pointer flex whitespace-nowrap items-center gap-1.5 bg-white rounded-full text-black/70 hover:text-black transition-colors"
+                    className="px-2.5 py-1 cursor-pointer flex whitespace-nowrap items-center gap-1.5 bg-white rounded-full text-black/70 hover:text-black transition-colors"
                   >
-                    <span className="text-xs uppercase tracking-wider font-semibold">
+                    <span className="text-sm font-inter-tight uppercase tracking-wider font-semibold">
                       {mobileMenuOpen ? "Close" : "Menu"}
                     </span>
                     <div className="flex flex-col gap-0.5 items-center justify-center w-3 h-3">
