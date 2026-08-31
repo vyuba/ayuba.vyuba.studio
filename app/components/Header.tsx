@@ -31,6 +31,20 @@ const itemVariants: Variants = {
   },
 };
 
+const socialLinks = [
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/alexander-preye-i-271aa7257/",
+  },
+  {
+    label: "Contra",
+    href: "https://contra.com/alexander_ayuba_preye_3fnoen2o?referralExperimentNid=DEFAULT_REFERRAL_PROGRAM&referrerUsername=alexander_ayuba_preye_3fnoen2o",
+  },
+  { label: "GitHub", href: "https://github.com/vyuba" },
+  { label: "Twitter", href: "https://x.com/vyuba_" },
+  { label: "Instagram", href: "https://www.instagram.com/vyuba_/" },
+];
+
 function Header() {
   return (
     <motion.div
@@ -58,12 +72,33 @@ function Header() {
             Developed the digital platform and brand presence for{" "}
             <CompanyHighlight
               name="Alami Capital"
-              href="https://alami-capital.com"
+              href="https://alami.netlify.app/"
             />
             . Currently designing and engineering the entire product end-to-end
             at{" "}
             <CompanyHighlight name="usecosmos" href="https://usecosmos.com" />.
           </motion.p>
+          <motion.nav
+            variants={itemVariants}
+            aria-label="Social and professional profiles"
+            className="w-fit"
+          >
+            <ul className="flex gap-0 p-0.5 font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full">
+              {socialLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit Ayuba Alexander's ${link.label} profile`}
+                    className="px-2.5 py-0.5 cursor-pointer flex whitespace-nowrap items-center bg-white rounded-full hover:text-black transition-all"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.nav>
         </div>
         <div className="w-full h-full hidden lg:block"></div>
       </section>

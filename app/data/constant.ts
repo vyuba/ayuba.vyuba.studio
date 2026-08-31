@@ -8,22 +8,22 @@ export const NavLinks = {
     },
     {
       id: 2,
-      link: "/works",
+      link: "/",
       title: "Engineer x Designer",
       beta: true,
     },
-    {
-      id: 3,
-      link: "/about",
-      title: "about",
-      beta: true,
-    },
-    {
-      id: 4,
-      link: "/articles",
-      title: "articles",
-      beta: true,
-    },
+    // {
+    //   id: 3,
+    //   link: "/about",
+    //   title: "about",
+    //   beta: true,
+    // },
+    // {
+    //   id: 4,
+    //   link: "/articles",
+    //   title: "articles",
+    //   beta: true,
+    // },
   ],
   footer: [
     {

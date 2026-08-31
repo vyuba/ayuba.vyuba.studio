@@ -32,7 +32,7 @@ export default function CompanyHighlight({
         whileTap={{ y: 0 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
         style={{ textDecorationColor: "var(--primary)", ...style }}
-        className={`inline cursor-pointer text-black font-medium underline underline-offset-4 decoration-2 hover:opacity-80 transition-opacity ${className}`}
+        className={`inline hover:italic cursor-pointer text-black font-medium underline underline-offset-4 decoration-2 hover:opacity-80 transition-all ${className}`}
         {...props}
       >
         {content}

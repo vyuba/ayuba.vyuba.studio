@@ -46,7 +46,7 @@ const works: Work[] = [
   },
   {
     id: 2,
-    link: "https://example.com/project2",
+    link: "https://alami.netlify.app/",
     bannerImage: "/images/project2-banner.jpg",
     title: "Alami Capital",
     type: "Law Firm",
@@ -59,7 +59,8 @@ const works: Work[] = [
       "Shopify Non - Extended App",
     ],
     selectedWorks: true,
-    commingSoon: true,
+    commingSoon: false,
+    liveLink: "https://alami.netlify.app/",
     aspectRatio: "landscape",
     hasCaseStudy: false,
     description:
@@ -73,14 +74,14 @@ const works: Work[] = [
   },
   {
     id: 4,
-    link: "https://example.com/project2",
+    link: "https://www.shopatunruly.com/",
     bannerImage: "/images/project2-banner.jpg",
     title: "Shopatunruly",
     type: "Fashion Ecommerce",
     skills: ["Figma", "Javascript", "Liquid", "Shopify"],
     selectedWorks: true,
     commingSoon: false,
-    liveLink: "https://example.com",
+    liveLink: "https://www.shopatunruly.com/",
     aspectRatio: "landscape",
     hasCaseStudy: false,
     description:
@@ -94,14 +95,14 @@ const works: Work[] = [
   },
   {
     id: 5,
-    link: "https://example.com/project2",
+    link: "https://verdiskin.store/",
     bannerImage: "/images/project2-banner.jpg",
     title: "Verdiskin",
     type: "Skincare Ecommerce",
     skills: ["Figma", "Javascript", "Liquid", "Shopify"],
     selectedWorks: true,
     commingSoon: false,
-    liveLink: "https://example.com",
+    liveLink: "https://verdiskin.store/",
     aspectRatio: "portrait",
     hasCaseStudy: false,
     description:
