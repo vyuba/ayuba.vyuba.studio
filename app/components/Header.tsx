@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import CompanyHighlight from "./CompanyHighlight";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -14,7 +14,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: {
     opacity: 0,
     filter: "blur(10px)",
@@ -43,7 +43,7 @@ function Header() {
         <div className="flex flex-col gap-4">
           <motion.h1 variants={itemVariants} className="flex flex-col gap-1">
             <span className="text-6xl font-apfel tracking-tighter">
-              I'm Ayuba Alexander, an Engineer who Designs.
+              I&apos;m Ayuba Alexander, an Engineer who Designs.
             </span>
           </motion.h1>
           <motion.p
@@ -65,7 +65,7 @@ function Header() {
             <CompanyHighlight name="usecosmos" href="https://usecosmos.com" />.
           </motion.p>
         </div>
-        <div className="w-full h-full"></div>
+        <div className="w-full h-full hidden lg:block"></div>
       </section>
       <motion.button
         variants={itemVariants}
