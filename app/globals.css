@@ -43,7 +43,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  background: color-mix(in srgb, var(--primary) 50%, transparent);
   color: var(--primary);
 }
 

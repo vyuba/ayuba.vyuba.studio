@@ -303,7 +303,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
         </div>
 
         {/* Technologies & Credits */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-8 font-inter-tight border-t border-black/5 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-8 font-inter-tight mt-8">
           {caseStudy.technologies && caseStudy.technologies.length > 0 && (
             <div className="flex flex-col items-center md:items-start gap-2">
               <h3 className="font-medium opacity-70 uppercase text-xs text-black/70">

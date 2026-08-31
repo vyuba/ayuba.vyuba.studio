@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import LenisScrollInit from "./components/LenisScroll";
 import Navbar from "./components/Navbar";
 import Footer from "./components/footer/FooterSection";
-import LoaderOverlay from "./components/LoaderOverlay";
+// import LoaderOverlay from "./components/LoaderOverlay";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,7 +53,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable}  ${geistMono.variable} ${interTight.variable} antialiased bg-[#FBFBFB] pt-3 md:pt-18`}
       >
-        <LoaderOverlay />
+        {/*<LoaderOverlay />*/}
         <Navbar />
         <LenisScrollInit>
           <div className="z-10">{children}</div>
