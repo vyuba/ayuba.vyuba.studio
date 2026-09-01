@@ -468,7 +468,7 @@ const WorkCardComponent = ({
 
               {/* Custom Hover Cursor */}
               <motion.div
-                className="pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
+                className="hidden md:block pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
                 style={{
                   x: cursorXSpring,
                   y: cursorYSpring,
@@ -602,7 +602,7 @@ const WorkCardComponent = ({
             {/* Custom Hover Cursor */}
             {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
               <motion.div
-                className="pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
+                className="hidden md:block pointer-events-none absolute top-0 left-0 px-4 py-2 bg-white/80 backdrop-blur-md border-[0.5px] border-black/10 text-black text-sm rounded-full z-50 font-inter-tight whitespace-nowrap shadow-sm"
                 style={{
                   x: cursorXSpring,
                   y: cursorYSpring,

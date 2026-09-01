@@ -51,18 +51,18 @@ function Header() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="relative w-full flex flex-col pb-20"
+      className="relative w-full flex flex-col pb-10 md:pb-20"
     >
       <section className="w-full grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-9 items-end transition-all duration-300 ease-in-out max-w-300 mx-auto p-2.5 my-10 min-h-[70dvh]">
         <div className="flex flex-col gap-4">
           <motion.h1 variants={itemVariants} className="flex flex-col gap-1">
-            <span className="text-6xl font-apfel tracking-tighter">
+            <span className="text-5xl md:text-6xl text-pretty font-apfel tracking-tighter">
               I&apos;m Ayuba Alexander, an Engineer who Designs.
             </span>
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="text-base text-black/90 font-normal font-inter-tight leading-relaxed"
+            className="text-sm md:text-base text-black/90 text-pretty font-normal font-inter-tight leading-relaxed"
           >
             Bridging the gap between engineering, visual design, and specialized
             Shopify development to craft intuitive digital products and commerce
