@@ -170,16 +170,49 @@ const WorkCardComponent = ({
   const [scaleFactor, setScaleFactor] = useState(1);
 
   useEffect(() => {
-    if (isExpanded && cardRef.current) {
+    if (!isExpanded || !cardRef.current) return;
+
+    const updateDimensionsAndScale = () => {
+      if (!cardRef.current) return;
       const rect = cardRef.current.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
       setDimensions({ width: rect.width, height: rect.height });
 
-      const targetWidth = window.innerWidth * 0.7;
-      const targetHeight = window.innerHeight * 0.65;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      let targetWidth: number;
+      let targetHeight: number;
+
+      if (vw < 768) {
+        // Mobile: comfortable margins leaving clearance for top safe area & bottom carousel controls
+        targetWidth = Math.min(vw * 0.92, 420);
+        targetHeight = Math.min(vh * 0.72, 580);
+      } else if (vw < 1200) {
+        // Tablet / Small Laptop
+        targetWidth = Math.min(vw * 0.72, 760);
+        targetHeight = Math.min(vh * 0.7, 640);
+      } else {
+        // Desktop & Ultrawide
+        targetWidth = Math.min(vw * 0.65, 900);
+        targetHeight = Math.min(vh * 0.72, 720);
+      }
+
       const scaleX = targetWidth / rect.width;
       const scaleY = targetHeight / rect.height;
       setScaleFactor(Math.min(scaleX, scaleY));
-    }
+    };
+
+    updateDimensionsAndScale();
+
+    window.addEventListener("resize", updateDimensionsAndScale);
+    window.addEventListener("orientationchange", updateDimensionsAndScale);
+
+    return () => {
+      window.removeEventListener("resize", updateDimensionsAndScale);
+      window.removeEventListener("orientationchange", updateDimensionsAndScale);
+    };
   }, [isExpanded]);
 
   const mouseX = useMotionValue(0);
@@ -625,7 +658,7 @@ const WorkCardComponent = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="fixed bottom-[10vh] left-0 right-0 flex justify-center items-center gap-4 z-50 pointer-events-auto"
+              className="fixed bottom-[8vh] left-0 right-0 flex justify-center items-center gap-4 z-50 pointer-events-auto"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
