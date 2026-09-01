@@ -133,18 +133,26 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
       </div>
 
       {/* Header */}
-      <div className="w-full flex flex-col gap-10 items-center justify-center min-h-[75dvh] h-fit relative">
+      <div className="w-full flex flex-col gap-3 md:gap-10 items-center justify-center min-h-[75dvh] h-fit relative">
         {caseStudy.headerMedia && caseStudy.headerMedia.length > 0 && (
-          <div className="flex flex-col md:flex-row gap-3 w-full">
+          <div className="contents md:flex md:flex-row md:gap-3 w-full">
             {caseStudy.headerMedia.map((media, index) => {
               const cardId = `header-${index + 1}`;
+              const middleIndex = Math.floor(caseStudy.headerMedia.length / 2);
+              const isMiddle = index === middleIndex;
+              const mobileOrder = isMiddle
+                ? "order-1"
+                : index < middleIndex
+                  ? "order-3"
+                  : "order-4";
+
               return (
                 <motion.div
                   key={cardId}
                   initial={{ backdropFilter: "blur(30px)", opacity: 0.5 }}
                   animate={{ backdropFilter: "blur(0px)", opacity: 1 }}
                   transition={{ type: "tween", duration: 0.6, damping: 0 }}
-                  className="w-full md:w-1/3"
+                  className={`w-full md:w-1/3 md:order-0 ${mobileOrder}`}
                 >
                   <MediaCard
                     id={cardId}
@@ -159,7 +167,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
           </div>
         )}
 
-        <div className="w-full max-w-4xl text-center flex flex-col gap-3">
+        <div className="w-full max-w-4xl text-center flex flex-col gap-3 order-2 md:order-0 mb-5 md:mb-0">
           <div className="self-center flex items-center justify-center gap-1">
             <h1 className="self-center text-black py-0.5 px-3 font-inter-tight bg-white rounded-full text-base border-2 border-[#c6c6c6]/30">
               {caseStudy.title}
@@ -205,7 +213,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
       </div>
 
       {/* Dynamic Content Sections */}
-      <div className="w-full flex flex-col gap-5 font-inter-tight mt-10">
+      <div className="w-full flex flex-col gap-5 font-inter-tight mt-3 md:mt-10">
         <div className="flex flex-col gap-4">
           {caseStudy.sections?.map((section, sIndex) => {
             if (section.type === "grid-2") {

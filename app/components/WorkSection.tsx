@@ -22,29 +22,35 @@ export default function WorkSection() {
     setExpandedId(null);
   }, []);
 
-  const handleNext = useCallback((e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    if (expandedId === null) return;
-    setIsNavigatingCarousel(true);
-    const currentIndex = filteredWorks.findIndex(w => w.id === expandedId);
-    if (currentIndex !== -1 && currentIndex < filteredWorks.length - 1) {
-      setExpandedId(filteredWorks[currentIndex + 1].id);
-    } else {
-      setExpandedId(filteredWorks[0].id);
-    }
-  }, [expandedId]);
+  const handleNext = useCallback(
+    (e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      if (expandedId === null) return;
+      setIsNavigatingCarousel(true);
+      const currentIndex = filteredWorks.findIndex((w) => w.id === expandedId);
+      if (currentIndex !== -1 && currentIndex < filteredWorks.length - 1) {
+        setExpandedId(filteredWorks[currentIndex + 1].id);
+      } else {
+        setExpandedId(filteredWorks[0].id);
+      }
+    },
+    [expandedId],
+  );
 
-  const handlePrev = useCallback((e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    if (expandedId === null) return;
-    setIsNavigatingCarousel(true);
-    const currentIndex = filteredWorks.findIndex(w => w.id === expandedId);
-    if (currentIndex > 0) {
-      setExpandedId(filteredWorks[currentIndex - 1].id);
-    } else {
-      setExpandedId(filteredWorks[filteredWorks.length - 1].id);
-    }
-  }, [expandedId]);
+  const handlePrev = useCallback(
+    (e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      if (expandedId === null) return;
+      setIsNavigatingCarousel(true);
+      const currentIndex = filteredWorks.findIndex((w) => w.id === expandedId);
+      if (currentIndex > 0) {
+        setExpandedId(filteredWorks[currentIndex - 1].id);
+      } else {
+        setExpandedId(filteredWorks[filteredWorks.length - 1].id);
+      }
+    },
+    [expandedId],
+  );
 
   // Keyboard navigation for open modal/popover (Esc to close, ArrowLeft/ArrowRight for prev/next)
   useEffect(() => {
@@ -71,10 +77,11 @@ export default function WorkSection() {
     <section
       id="work-section"
       aria-labelledby="work-section-heading"
-      className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5"
+      className="flex flex-col gap-1.5 w-full max-w-300 mx-auto px-2.5 pt-10 md:pt-20"
     >
       <h2 id="work-section-heading" className="sr-only">
-        Selected Works & Projects — Shopify Development, Design Engineering & Frontend Case Studies
+        Selected Works & Projects — Shopify Development, Design Engineering &
+        Frontend Case Studies
       </h2>
       <motion.div
         className="columns-1 md:columns-3 gap-3 w-full"

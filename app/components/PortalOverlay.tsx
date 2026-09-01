@@ -87,7 +87,7 @@ function PortalOverlayComponent({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#c6c6c6]/5 backdrop-blur-xs"
+            className="fixed inset-0 z-40 bg-[#c6c6c6]/5 backdrop-blur-xs "
             onClick={onClose}
             onMouseMove={(e) => {
               const targetX = e.clientX - 24;
@@ -121,7 +121,7 @@ function PortalOverlayComponent({
             {/* Custom "X" Cursor driven directly via MotionValues (0 React re-renders) */}
             <motion.button
               aria-label="Close Overlay"
-              className="pointer-events-none fixed  top-0 left-0 w-12 h-12 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black cursor-pointer rounded-full flex items-center justify-center z-50"
+              className="pointer-events-none fixed  top-0 left-0 w-12 h-12 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black cursor-pointer rounded-full  hidden md:flex items-center justify-center z-50"
               style={{
                 x: cursorXSpring,
                 y: cursorYSpring,

@@ -51,7 +51,7 @@ function Header() {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="relative w-full flex flex-col pb-10 md:pb-20"
+      className="relative w-full flex flex-col"
     >
       <section className="w-full grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-9 items-end transition-all duration-300 ease-in-out max-w-300 mx-auto p-2.5 my-10 min-h-[70dvh]">
         <div className="flex flex-col gap-4">
