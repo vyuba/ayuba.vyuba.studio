@@ -10,11 +10,17 @@
   src: url("/font/ApfelGrotezk-Regular.otf");
 }
 
+@font-face {
+  font-family: "Karstar";
+  src: url("/font/Karstar.ttf");
+}
+
 :root {
   --background: #fbfbfb;
   --foreground: #171717;
   --font-braille: "Braille", sans-serif;
   --font-apfel: "Apfel", serif;
+  --font-karstar: "Karstar", cursive;
   --primary: #5c88da;
 }
 
@@ -27,6 +33,7 @@
   --font-inter-tight: var(--font-inter-tight);
   --font-braille: var(--font-braille);
   --font-apfel: var(--font-apfel);
+  --font-karstar: var(--font-karstar);
 }
 
 /* @media (prefers-color-scheme: dark) {

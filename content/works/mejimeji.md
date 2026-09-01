@@ -28,12 +28,10 @@ technologies:
   - "JavaScript"
   - "Figma"
 credits:
-  - role: "PROJECT LEAD"
-    name: "Ayuba Alexander (vyuba.studio)"
+  - role: "PROJECT LEAD X DEVELOPMENT"
+    name: "Ayuba (vyuba.studio)"
   - role: "DESIGN"
     name: "Barth x Ayuba (vyuba.studio)"
-  - role: "DEVELOPMENT"
-    name: "Ayuba Alexander"
 headerMedia:
   - backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg"
     centerMedia:

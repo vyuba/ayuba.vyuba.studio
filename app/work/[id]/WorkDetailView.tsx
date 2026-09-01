@@ -121,15 +121,14 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
   return (
     <div className="w-full flex flex-col items-center justify-center bg-[#FBFBFB] max-w-300 mx-auto px-4 py-8">
       {/* Back to works button */}
-      <div className="w-full flex items-center justify-between mb-4">
+      <div className="w-full flex items-center justify-between my-2">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#c6c6c6]/40 text-black/80 hover:text-black hover:border-black/30 transition-colors text-xs font-inter-tight font-medium shadow-2xs"
+          className="inline-flex items-center gap-2  py-1.5 rounded-full hover:scale-90 transition-all text-xs font-inter-tight font-medium shadow-2xs"
         >
-          <span className="rotate-180 flex items-center justify-center size-3 text-black">
+          <span className="rotate-180 flex items-center justify-center size-10 text-primary">
             <ArrowIcon />
           </span>
-          <span>Back</span>
         </Link>
       </div>
 
@@ -282,15 +281,15 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
               return (
                 <div
                   key={sIndex}
-                  className="grid grid-cols-1 gap-6 py-10 md:grid-cols-2 md:gap-3"
+                  className="grid grid-cols-1 gap-6 py-10 md:grid-cols-2 md:gap-3 "
                 >
                   {section.title && (
-                    <h2 className="text-2xl font-medium text-black opacity-80 max-w-[90%]">
+                    <h2 className="text-2xl font-medium text-black opacity-80 md:max-w-[90%] md:text-left text-center text-pretty">
                       {section.title}
                     </h2>
                   )}
                   {section.description && (
-                    <p className="leading-relaxed text-sm text-black">
+                    <p className="leading-relaxed text-sm text-black text-center md:text-left text-pretty">
                       {section.description}
                     </p>
                   )}
@@ -303,13 +302,13 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
         </div>
 
         {/* Technologies & Credits */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-8 font-inter-tight mt-8">
+        <div className="grid grid-cols-1 w-full items-center justify-center gap-10 p-8 font-inter-tight mt-8">
           {caseStudy.technologies && caseStudy.technologies.length > 0 && (
-            <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="flex flex-col items-center gap-2">
               <h3 className="font-medium opacity-70 uppercase text-xs text-black/70">
                 Technologies
               </h3>
-              <ul className="text-sm flex flex-wrap gap-1">
+              <ul className="text-sm flex items-center justify-center flex-wrap gap-1">
                 {caseStudy.technologies.map((item, index) => (
                   <li
                     className="bg-white w-fit border border-[#c6c6c6]/30 whitespace-nowrap rounded-full px-2.5 py-1 text-sm text-center text-black font-inter-tight"
@@ -323,20 +322,20 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
           )}
 
           {caseStudy.credits && caseStudy.credits.length > 0 && (
-            <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="flex flex-col items-center gap-2">
               <h3 className="font-medium opacity-70 uppercase text-xs text-black/70">
                 Credits
               </h3>
-              <ul className="text-sm flex flex-col gap-1.5">
+              <ul className="flex flex-wrap max-w-100 items-center justify-center gap-3">
                 {caseStudy.credits.map((credit, index) => (
                   <li
                     key={index}
-                    className="text-xs text-black/80 font-inter-tight"
+                    className=" text-black/80 font-inter-tight flex flex-col items-center gap-1"
                   >
-                    <span className="font-medium text-black mr-2">
-                      {credit.role}:
+                    <span className="font-medium text-black mr-2 text-xs">
+                      {credit.role}
                     </span>
-                    {credit.name}
+                    <span className="text-sm">{credit.name}</span>
                   </li>
                 ))}
               </ul>
