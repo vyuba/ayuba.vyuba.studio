@@ -193,7 +193,7 @@ function ExpandableCardComponent({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="fixed bottom-[8vh] left-0 right-0 flex justify-center items-center gap-4 z-50 pointer-events-auto"
+              className="fixed bottom-[8vh]  left-0 right-0 flex justify-center items-center gap-4 z-50 pointer-events-auto"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -203,7 +203,7 @@ function ExpandableCardComponent({
                   e.stopPropagation();
                   if (onPrev) onPrev(e);
                 }}
-                className="cursor-pointer bg-blend-difference w-10 h-10 flex items-center justify-center text-white transition-colors rotate-180"
+                className="cursor-pointer bg-blend-difference w-10 h-10 flex items-center justify-center text-primary transition-colors rotate-180"
               >
                 <ArrowIcon />
               </motion.button>
@@ -220,7 +220,7 @@ function ExpandableCardComponent({
                   e.stopPropagation();
                   if (onNext) onNext(e);
                 }}
-                className="cursor-pointer bg-blend-difference w-10 h-10 flex items-center justify-center text-white transition-colors"
+                className="cursor-pointer bg-blend-difference w-10 h-10 flex items-center justify-center text-primary transition-colors"
               >
                 <ArrowIcon />
               </motion.button>
