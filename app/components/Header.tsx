@@ -69,10 +69,11 @@ function Header() {
             experiences. Designed and built the storefront, design system, and
             omnichannel Shopify POS experience at{" "}
             <CompanyHighlight name="Meji Meji" href="https://mejimeji.co" />.
-            Developed the digital platform and brand presence for{" "}
+            Built the web experience and creative development for the client
+            linked with Shopify GraphQL using headless for{" "}
             <CompanyHighlight
-              name="Alami Capital"
-              href="https://alami.netlify.app/"
+              name="1Percnt Studio"
+              href="https://1percnt.com"
             />
             . Currently designing and engineering the entire product end-to-end
             at{" "}
