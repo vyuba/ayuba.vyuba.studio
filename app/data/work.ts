@@ -137,7 +137,7 @@ const works: Work[] = [
     backgroundImage: "/works/1percnt.com/1percnt-background.webp",
     centerMedia: {
       type: "video",
-      url: "/works/1percnt.com/1percnt-center-media.mov",
+      url: "/works/1percnt.com/1percnt-center-media.mp4",
     },
   },
 ];
