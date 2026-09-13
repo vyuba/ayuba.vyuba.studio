@@ -116,6 +116,7 @@ export default function WorkSection() {
             currentIndex={index}
             totalCount={filteredWorks.length}
             isNavigatingCarousel={isNavigatingCarousel}
+            priority={index < 2}
           />
         ))}
       </motion.div>

@@ -29,7 +29,7 @@ export async function generateMetadata({
   const image =
     caseStudy.seo?.image ||
     caseStudy.headerMedia?.[0]?.backgroundImage ||
-    "/works/mejimeji.co/mejimeji-background.jpg";
+    "/works/mejimeji.co/mejimeji-background.webp";
   const url = `https://ayuba.vyuba.studio/work/${caseStudy.slug}`;
 
   return {
@@ -82,7 +82,7 @@ export default async function WorkPage({ params }: PageProps) {
   const image =
     caseStudy.seo?.image ||
     caseStudy.headerMedia?.[0]?.backgroundImage ||
-    "/works/mejimeji.co/mejimeji-background.jpg";
+    "/works/mejimeji.co/mejimeji-background.webp";
   const url = `https://ayuba.vyuba.studio/work/${caseStudy.slug}`;
 
   const jsonLd = {

@@ -160,6 +160,7 @@ export default function WorkDetailView({ caseStudy }: WorkDetailViewProps) {
                     centerMedia={media.centerMedia}
                     aspectRatio={media.aspectRatio || "portrait"}
                     className="w-full"
+                    priority={index === 0 || isMiddle}
                   />
                 </motion.div>
               );

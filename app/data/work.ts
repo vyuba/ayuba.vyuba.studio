@@ -17,6 +17,7 @@ export interface Work {
   centerMedia?: {
     type: "image" | "video";
     url: string;
+    poster?: string;
     aspectRatio?: string;
   };
 }
@@ -37,10 +38,10 @@ const works: Work[] = [
 
     description:
       "I was brought in by Amzora Automation to help make their operational scale visible and legible. The initial focus was on warehouse and operations design, shaping how the physical infrastructure, workflows, and systems were presented to reflect efficiency, credibility, and readiness to scale.As the work progressed, my involvement naturally expanded beyond spatial and visual execution into brand and growth leadership.",
-    backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg",
+    backgroundImage: "/works/mejimeji.co/mejimeji-background.webp",
     centerMedia: {
       type: "image",
-      url: "/works/mejimeji.co/mejimeji-center-media.png",
+      url: "/works/mejimeji.co/mejimeji-center-media.webp",
       aspectRatio: "9/16",
     },
   },
@@ -58,10 +59,11 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "A minimal productivity workspace tool designed to eliminate distractions and streamline daily dev workflows.",
-    backgroundImage: "/works/alami-capital.com/alami-capital-background.jpg",
+    backgroundImage: "/works/alami-capital.com/alami-capital-background.webp",
     centerMedia: {
       type: "video",
-      url: "/works/alami-capital.com/alami-capital-center-media.mov",
+      url: "/works/alami-capital.com/alami-capital-center-media.mp4",
+      poster: "/works/alami-capital.com/alami-capital-center-poster.webp",
       aspectRatio: "16/9",
     },
   },
@@ -79,10 +81,11 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
-    backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png",
+    backgroundImage: "/works/shopatunruly.com/shopatunruly-background.webp",
     centerMedia: {
       type: "video",
-      url: "/works/shopatunruly.com/shopatunruly-center-media.mov",
+      url: "/works/shopatunruly.com/shopatunruly-center-media.mp4",
+      poster: "/works/shopatunruly.com/shopatunruly-center-poster.webp",
       aspectRatio: "16/9",
     },
   },
@@ -100,10 +103,10 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
-    backgroundImage: "/works/verdiskin.com/verdiskin-background.png",
+    backgroundImage: "/works/verdiskin.com/verdiskin-background.webp",
     centerMedia: {
       type: "image",
-      url: "/works/verdiskin.com/verdiskin-center-media.png",
+      url: "/works/verdiskin.com/verdiskin-center-media.webp",
       aspectRatio: "16/9",
     },
   },
@@ -119,7 +122,7 @@ const works: Work[] = [
     hasCaseStudy: false,
     description:
       "Modern corporate identity and digital presence for a boutique investment and legal advisory group.",
-    backgroundImage: "/works/usecomos.com/usecomos-background.png",
+    backgroundImage: "/works/usecomos.com/usecomos-background.webp",
   },
   {
     id: 8,
@@ -138,6 +141,8 @@ const works: Work[] = [
     centerMedia: {
       type: "video",
       url: "/works/1percnt.com/1percnt-center-media.mp4",
+      poster: "/works/1percnt.com/1percnt-center-poster.webp",
+      aspectRatio: "16/9",
     },
   },
 ];

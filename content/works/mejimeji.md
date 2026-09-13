@@ -7,7 +7,7 @@ liveUrl: "https://mejimeji.co"
 seo:
   title: "Meji Meji — Fashion E-Commerce Case Study"
   description: "Explore the Meji Meji case study: a scalable fashion e-commerce experience crafted with Shopify, Shopify Liquid, Figma fluid motion design, and responsive design systems."
-  image: "/works/mejimeji.co/mejimeji-background.jpg"
+  image: "/works/mejimeji.co/mejimeji-background.webp"
   keywords:
     - "Meji Meji"
     - "Fashion Ecommerce"
@@ -33,31 +33,33 @@ credits:
   - role: "DESIGN"
     name: "Barth x Ayuba (vyuba.studio)"
 headerMedia:
-  - backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg"
+  - backgroundImage: "/works/mejimeji.co/mejimeji-background.webp"
     centerMedia:
       type: "image"
-      url: "/works/mejimeji.co/mejimeji-center-media.png"
+      url: "/works/mejimeji.co/mejimeji-center-media.webp"
       aspectRatio: "9/16"
-  - backgroundImage: "/works/mejimeji.co/mejimeji-cover.png"
+  - backgroundImage: "/works/mejimeji.co/mejimeji-cover.webp"
     aspectRatio: "square"
-  - backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png"
+  - backgroundImage: "/works/shopatunruly.com/shopatunruly-background.webp"
     centerMedia:
       type: "video"
-      url: "/works/shopatunruly.com/shopatunruly-center-media.mov"
+      url: "/works/shopatunruly.com/shopatunruly-center-media.mp4"
+      poster: "/works/shopatunruly.com/shopatunruly-center-poster.webp"
       aspectRatio: "16/9"
 sections:
   - type: "grid-2"
     items:
-      - backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg"
+      - backgroundImage: "/works/mejimeji.co/mejimeji-background.webp"
         centerMedia:
           type: "image"
-          url: "/works/mejimeji.co/mejimeji-center-media.png"
+          url: "/works/mejimeji.co/mejimeji-center-media.webp"
           aspectRatio: "9/16"
         aspectRatio: "square"
-      - backgroundImage: "/works/alami-capital.com/alami-capital-background.jpg"
+      - backgroundImage: "/works/alami-capital.com/alami-capital-background.webp"
         centerMedia:
           type: "video"
-          url: "/works/alami-capital.com/alami-capital-center-media.mov"
+          url: "/works/alami-capital.com/alami-capital-center-media.mp4"
+          poster: "/works/alami-capital.com/alami-capital-center-poster.webp"
           aspectRatio: "16/9"
         aspectRatio: "square"
   - type: "split"
@@ -65,22 +67,23 @@ sections:
     description: "Brands today often struggle with fragmented digital identities across various touchpoints, resulting in a disjointed user experience and diluted brand equity. Our client needed a cohesive, modern web presence that could break through the noise, capture audience attention, and drive meaningful engagement without sacrificing performance."
   - type: "grid-3"
     items:
-      - backgroundImage: "/works/mejimeji.co/mejimeji-background.jpg"
+      - backgroundImage: "/works/mejimeji.co/mejimeji-background.webp"
         centerMedia:
           type: "image"
-          url: "/works/mejimeji.co/mejimeji-center-media.png"
+          url: "/works/mejimeji.co/mejimeji-center-media.webp"
           aspectRatio: "9/16"
         aspectRatio: "square"
-      - backgroundImage: "/works/alami-capital.com/alami-capital-background.jpg"
+      - backgroundImage: "/works/alami-capital.com/alami-capital-background.webp"
         centerMedia:
           type: "video"
-          url: "/works/alami-capital.com/alami-capital-center-media.mov"
+          url: "/works/alami-capital.com/alami-capital-center-media.mp4"
+          poster: "/works/alami-capital.com/alami-capital-center-poster.webp"
           aspectRatio: "16/9"
         aspectRatio: "square"
-      - backgroundImage: "/works/verdiskin.com/verdiskin-background.png"
+      - backgroundImage: "/works/verdiskin.com/verdiskin-background.webp"
         centerMedia:
           type: "image"
-          url: "/works/verdiskin.com/verdiskin-center-media.png"
+          url: "/works/verdiskin.com/verdiskin-center-media.webp"
           aspectRatio: "16/9"
         aspectRatio: "square"
   - type: "split"
@@ -88,12 +91,13 @@ sections:
     description: "We developed a unified design system and a high-performance web application utilizing modern web technologies. By integrating seamless interactions, compelling motion design, and a responsive architectural grid, we delivered an immersive digital experience that unifies the brand's narrative seamlessly across all digital platforms."
   - type: "grid-2"
     items:
-      - backgroundImage: "/works/shopatunruly.com/shopatunruly-background.png"
+      - backgroundImage: "/works/shopatunruly.com/shopatunruly-background.webp"
         centerMedia:
           type: "video"
-          url: "/works/shopatunruly.com/shopatunruly-center-media.mov"
+          url: "/works/shopatunruly.com/shopatunruly-center-media.mp4"
+          poster: "/works/shopatunruly.com/shopatunruly-center-poster.webp"
           aspectRatio: "16/9"
         aspectRatio: "square"
-      - backgroundImage: "/works/usecomos.com/usecomos-background.png"
+      - backgroundImage: "/works/usecomos.com/usecomos-background.webp"
         aspectRatio: "square"
 ---

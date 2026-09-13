@@ -20,6 +20,7 @@ interface WorkCardProps {
   currentIndex?: number;
   totalCount?: number;
   isNavigatingCarousel?: boolean;
+  priority?: boolean;
 }
 
 const overlayVariants = {
@@ -143,6 +144,7 @@ const WorkCardComponent = ({
   currentIndex,
   totalCount,
   isNavigatingCarousel,
+  priority = false,
 }: WorkCardProps) => {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -326,7 +328,7 @@ const WorkCardComponent = ({
               alt={work.title}
               fill
               className={`object-cover object-center z-0 ${work.centerMedia ? "scale-110 opacity-90" : ""}`}
-              sizes="(max-width: 768px) 100vw, 100vw"
+              sizes="(max-width: 768px) 95vw, (max-width: 1200px) 75vw, 900px"
             />
           )}
           {work.centerMedia && (
@@ -346,10 +348,15 @@ const WorkCardComponent = ({
               {work.centerMedia.type === "video" ? (
                 <video
                   src={work.centerMedia.url}
+                  poster={
+                    work.centerMedia.poster ||
+                    work.centerMedia.url.replace(/\.mp4$/, "-poster.webp")
+                  }
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
                   onLoadedMetadata={handleVideoMetadata}
                   className="w-full h-full object-cover"
                 />
@@ -360,7 +367,7 @@ const WorkCardComponent = ({
                   fill
                   onLoad={handleImageLoad}
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 100vw"
+                  sizes="(max-width: 768px) 85vw, 760px"
                 />
               )}
             </motion.div>
@@ -418,8 +425,9 @@ const WorkCardComponent = ({
           src={work.backgroundImage}
           alt={work.title}
           fill
+          priority={priority}
           className={`object-cover z-0 object-center ${work.centerMedia ? "scale-110 opacity-90 group-hover/work-card:scale-112 duration-700 transition-all " : "group-hover/work-card:scale-102 duration-700 transition-all "}`}
-          sizes="(max-width: 768px) 100vw, 100vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
         />
       )}
       {work.centerMedia && (
@@ -440,9 +448,14 @@ const WorkCardComponent = ({
             <video
               ref={videoRef}
               src={work.centerMedia.url}
+              poster={
+                work.centerMedia.poster ||
+                work.centerMedia.url.replace(/\.mp4$/, "-poster.webp")
+              }
               loop
               muted
               playsInline
+              preload="none"
               onLoadedMetadata={handleVideoMetadata}
               className="w-full h-full object-cover"
             />
@@ -451,9 +464,10 @@ const WorkCardComponent = ({
               src={work.centerMedia.url}
               alt={work.title}
               fill
+              priority={priority}
               onLoad={handleImageLoad}
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 100vw"
+              sizes="(max-width: 768px) 85vw, 320px"
             />
           )}
         </motion.div>

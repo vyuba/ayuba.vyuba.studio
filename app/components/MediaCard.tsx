@@ -11,6 +11,7 @@ interface WorkMediaCardProps {
   centerMedia?: {
     type: "image" | "video";
     url: string;
+    poster?: string;
     aspectRatio?: number | string;
   };
   aspectRatio?: string;
@@ -24,6 +25,7 @@ interface WorkMediaCardProps {
   currentIndex?: number;
   totalCount?: number;
   isNavigatingCarousel?: boolean;
+  priority?: boolean;
 }
 
 function WorkMediaCardComponent({
@@ -41,6 +43,7 @@ function WorkMediaCardComponent({
   currentIndex,
   totalCount,
   isNavigatingCarousel,
+  priority = false,
 }: WorkMediaCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -153,7 +156,7 @@ function WorkMediaCardComponent({
               alt="Work Background"
               fill
               className={`object-cover object-center z-0 ${centerMedia ? "scale-110 opacity-90" : ""}`}
-              sizes="(max-width: 768px) 100vw, 100vw"
+              sizes="(max-width: 768px) 95vw, (max-width: 1200px) 75vw, 900px"
             />
           )}
           {centerMedia && (
@@ -173,10 +176,15 @@ function WorkMediaCardComponent({
               {centerMedia.type === "video" ? (
                 <video
                   src={centerMedia.url}
+                  poster={
+                    centerMedia.poster ||
+                    centerMedia.url.replace(/\.mp4$/, "-poster.webp")
+                  }
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
                   onLoadedMetadata={handleVideoMetadata}
                   className="w-full h-full object-cover"
                 />
@@ -187,7 +195,7 @@ function WorkMediaCardComponent({
                   fill
                   onLoad={handleImageLoad}
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 100vw"
+                  sizes="(max-width: 768px) 85vw, 760px"
                 />
               )}
             </motion.div>
@@ -200,8 +208,9 @@ function WorkMediaCardComponent({
           src={backgroundImage}
           alt="Work Background"
           fill
+          priority={priority}
           className={`object-cover z-0 object-center ${centerMedia ? "scale-110 opacity-90 group-hover/work-card:scale-112 duration-700 transition-all " : "group-hover/work-card:scale-102 duration-700 transition-all "}`}
-          sizes="(max-width: 768px) 100vw, 100vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
         />
       )}
       {centerMedia && (
@@ -222,9 +231,14 @@ function WorkMediaCardComponent({
             <video
               ref={videoRef}
               src={centerMedia.url}
+              poster={
+                centerMedia.poster ||
+                centerMedia.url.replace(/\.mp4$/, "-poster.webp")
+              }
               loop
               muted
               playsInline
+              preload="none"
               onLoadedMetadata={handleVideoMetadata}
               className="w-full h-full object-cover"
             />
@@ -233,9 +247,10 @@ function WorkMediaCardComponent({
               src={centerMedia.url}
               alt="Work Center Media"
               fill
+              priority={priority}
               onLoad={handleImageLoad}
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 100vw"
+              sizes="(max-width: 768px) 85vw, 320px"
             />
           )}
         </motion.div>
