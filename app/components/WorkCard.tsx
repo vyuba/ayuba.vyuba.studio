@@ -15,8 +15,8 @@ interface WorkCardProps {
   isExpanded?: boolean;
   onExpand?: (id: number) => void;
   onClose?: () => void;
-  onNext?: (e: React.MouseEvent) => void;
-  onPrev?: (e: React.MouseEvent) => void;
+  onNext?: (e?: React.MouseEvent) => void;
+  onPrev?: (e?: React.MouseEvent) => void;
   currentIndex?: number;
   totalCount?: number;
   isNavigatingCarousel?: boolean;
@@ -343,7 +343,7 @@ const WorkCardComponent = ({
                 aspectRatio:
                   mediaAspectRatio || work.centerMedia.aspectRatio || undefined,
               }}
-              className="absolute inset-0 m-auto w-auto h-auto max-w-[85%] max-h-[85%] z-10 flex items-center justify-center pointer-events-none overflow-hidden shadow-lg "
+              className="absolute inset-0 m-auto w-auto h-auto max-w-[85%] max-h-[85%] z-10 flex items-center justify-center pointer-events-none overflow-hidden shadow-lg"
             >
               {work.centerMedia.type === "video" ? (
                 <video
@@ -378,7 +378,7 @@ const WorkCardComponent = ({
               <motion.h3 className="rounded-full bg-[#fbfbfb] text-black/70 px-2.5 py-1.5 text-xs text-center font-medium font-inter-tight">
                 {work.title}
               </motion.h3>
-              {((work.hasCaseStudy && work.caseStudyUrl) || work.link) && (
+              {(work.hasCaseStudy && work.caseStudyUrl) || work.link ? (
                 <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
                   <motion.button
                     aria-label={work.caseStudyUrl ? "Case study" : "LiveLink"}
@@ -395,7 +395,7 @@ const WorkCardComponent = ({
                     <ArrowDiagonalIcon className="size-4" />
                   </motion.button>
                 </motion.div>
-              )}
+              ) : null}
             </div>
           </motion.div>
 
@@ -483,25 +483,24 @@ const WorkCardComponent = ({
           >
             {work.title}
           </motion.h3>
-          {(work.hasCaseStudy && work.caseStudyUrl) ||
-            (work.link && (
-              <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
-                <motion.button
-                  aria-label={work.caseStudyUrl ? "Case study" : "LiveLink"}
-                  variants={firstArrowVariants}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  <ArrowDiagonalIcon className="size-4" />
-                </motion.button>
-                <motion.button
-                  aria-label={work.caseStudyUrl ? "Live Link" : "Case study"}
-                  variants={secondArrowVariants}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  <ArrowDiagonalIcon className="size-4" />
-                </motion.button>
-              </motion.div>
-            ))}
+          {(work.hasCaseStudy && work.caseStudyUrl) || work.link ? (
+            <motion.div className="size-6.5 border-[0.5px] border-[#c6c6c6]/30 bg-white text-black/70 cursor-pointer rounded-full relative overflow-hidden flex items-center justify-center z-50">
+              <motion.button
+                aria-label={work.caseStudyUrl ? "Case study" : "LiveLink"}
+                variants={firstArrowVariants}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <ArrowDiagonalIcon className="size-4" />
+              </motion.button>
+              <motion.button
+                aria-label={work.caseStudyUrl ? "Live Link" : "Case study"}
+                variants={secondArrowVariants}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <ArrowDiagonalIcon className="size-4" />
+              </motion.button>
+            </motion.div>
+          ) : null}
         </div>
         <motion.div
           variants={skillsContainerVariants}

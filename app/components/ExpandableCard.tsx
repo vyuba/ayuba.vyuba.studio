@@ -12,8 +12,8 @@ export interface ExpandableCardProps {
   cardClassName?: string;
   isExpanded?: boolean;
   onClose?: () => void;
-  onNext?: (e: React.MouseEvent) => void;
-  onPrev?: (e: React.MouseEvent) => void;
+  onNext?: (e?: React.MouseEvent) => void;
+  onPrev?: (e?: React.MouseEvent) => void;
   currentIndex?: number;
   totalCount?: number;
   isNavigatingCarousel?: boolean;
@@ -147,7 +147,12 @@ function ExpandableCardComponent({
         </div>
       </motion.article>
 
-      <PortalOverlay isOpen={isExpanded} onClose={onClose || (() => {})}>
+      <PortalOverlay
+        isOpen={isExpanded}
+        onClose={onClose || (() => {})}
+        onNext={onNext ? () => onNext() : undefined}
+        onPrev={onPrev ? () => onPrev() : undefined}
+      >
         <div className="w-fit h-fit relative flex flex-col">
           <motion.div
             layoutId={

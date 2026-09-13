@@ -20,8 +20,8 @@ interface WorkMediaCardProps {
   isExpanded?: boolean;
   onExpand?: (id?: string | number) => void;
   onClose?: () => void;
-  onNext?: (e: React.MouseEvent) => void;
-  onPrev?: (e: React.MouseEvent) => void;
+  onNext?: (e?: React.MouseEvent) => void;
+  onPrev?: (e?: React.MouseEvent) => void;
   currentIndex?: number;
   totalCount?: number;
   isNavigatingCarousel?: boolean;
