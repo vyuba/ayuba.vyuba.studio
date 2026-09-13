@@ -29,7 +29,6 @@ function NavbarComponent() {
   const [isHovered, setIsHovered] = useState(false);
   const [isNear, setIsNear] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeReappeared, setActiveReappeared] = useState(false);
 
   const navRef = useRef<HTMLDivElement>(null);
@@ -81,9 +80,6 @@ function NavbarComponent() {
     const mql = window.matchMedia("(max-width: 767px)");
     const updateMobile = (e: MediaQueryListEvent | MediaQueryList) => {
       setIsMobile(e.matches);
-      if (!e.matches) {
-        setMobileMenuOpen(false);
-      }
     };
     updateMobile(mql);
     mql.addEventListener("change", updateMobile);
@@ -95,9 +91,6 @@ function NavbarComponent() {
     const handleScroll = () => {
       const scrollPos = window.scrollY;
       setIsScrolled(scrollPos > 50);
-      if (scrollPos <= 50) {
-        setMobileMenuOpen(false);
-      }
     };
 
     handleScroll();
@@ -168,9 +161,9 @@ function NavbarComponent() {
 
   // Collapse state:
   // - On desktop: collapsed when scrolled past 50px AND cursor is NOT near or hovering navbar
-  // - On mobile: collapsed when scrolled past 50px AND mobile menu is not open
+  // - On mobile: collapsed when scrolled past 50px
   const isCollapsed = isMobile
-    ? isScrolled && !mobileMenuOpen
+    ? isScrolled
     : isScrolled && !isNear && !isHovered;
 
   // Active link animates out alongside all items, then reappears shortly after
@@ -241,7 +234,6 @@ function NavbarComponent() {
                     <Link
                       href={item.link}
                       aria-current={isActive ? "page" : undefined}
-                      onClick={() => setMobileMenuOpen(false)}
                       className={`px-2.5 py-0.5 cursor-pointer flex whitespace-nowrap items-center bg-white rounded-full transition-colors duration-200 ${
                         isActive
                           ? "text-black font-semibold shadow-xs"
@@ -253,117 +245,9 @@ function NavbarComponent() {
                   </motion.li>
                 );
               })}
-
-              {/* Mobile Menu Trigger Button (Gooey In on Mobile when Scrolled & Collapsed) */}
-              {isMobile && isScrolled && activeReappeared && (
-                <motion.li
-                  key="mobile-menu-btn"
-                  layout
-                  initial={{
-                    opacity: 0,
-                    filter: "blur(8px)",
-                    scale: 0.95,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    scale: 1,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    filter: "blur(8px)",
-                    scale: 0.95,
-                  }}
-                  transition={navTransition}
-                  className="shrink-0"
-                >
-                  <button
-                    onClick={() => setMobileMenuOpen((prev) => !prev)}
-                    aria-label="Toggle Menu"
-                    aria-expanded={mobileMenuOpen}
-                    className="px-2.5 py-1 cursor-pointer flex whitespace-nowrap items-center gap-1.5 bg-white rounded-full text-black/70 hover:text-black transition-colors"
-                  >
-                    <span className="text-sm font-inter-tight capitalize tracking-wider font-semibold">
-                      {mobileMenuOpen ? "Close" : "Menu"}
-                    </span>
-                    <div className="flex flex-col gap-0.5 items-center justify-center w-3 h-3">
-                      <motion.span
-                        animate={
-                          mobileMenuOpen
-                            ? { rotate: 45, y: 2 }
-                            : { rotate: 0, y: 0 }
-                        }
-                        transition={{ duration: 0.2 }}
-                        className="w-2.5 h-[1.5px] bg-black/70 rounded-full block"
-                      />
-                      <motion.span
-                        animate={
-                          mobileMenuOpen
-                            ? { rotate: -45, y: -2 }
-                            : { rotate: 0, y: 0 }
-                        }
-                        transition={{ duration: 0.2 }}
-                        className="w-2.5 h-[1.5px] bg-black/70 rounded-full block"
-                      />
-                    </div>
-                  </button>
-                </motion.li>
-              )}
             </AnimatePresence>
           </motion.ul>
         </motion.nav>
-
-        {/* Mobile Dropdown Menu when opened on mobile */}
-        <AnimatePresence>
-          {isMobile && mobileMenuOpen && (
-            <motion.div
-              role="menu"
-              aria-label="Mobile Navigation"
-              initial={{
-                opacity: 0,
-                y: -8,
-                filter: "blur(10px)",
-                scale: 0.95,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-                scale: 1,
-              }}
-              exit={{
-                opacity: 0,
-                y: -8,
-                filter: "blur(8px)",
-                scale: 0.95,
-              }}
-              transition={navTransition}
-              className="absolute left-0 top-full mt-2 w-48 bg-white/90 backdrop-blur-xl border border-black/5 rounded-2xl p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] z-50 flex flex-col gap-1"
-            >
-              {menuItems.map((item) => {
-                const isActive = item.id === activeItem.id;
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.link}
-                    aria-current={isActive ? "page" : undefined}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`px-3 py-1.5 rounded-xl font-inter-tight text-sm flex items-center justify-between transition-colors ${
-                      isActive
-                        ? "bg-[#c6c6c6]/20 text-black font-semibold"
-                        : "text-black/60 hover:text-black hover:bg-black/5"
-                    }`}
-                  >
-                    <span>{item.title}</span>
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-black" />
-                    )}
-                  </Link>
-                );
-              })}
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </header>
   );
