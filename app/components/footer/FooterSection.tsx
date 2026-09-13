@@ -59,7 +59,10 @@ export default function Footer() {
           Ayuba Alexander
         </h2>
       </div>
-      <nav aria-label="Social and professional profiles" className="self-center z-10">
+      <nav
+        aria-label="Social and professional profiles"
+        className="self-center z-10"
+      >
         <ul className="flex gap-0 p-0.5 font-inter-tight text-sm text-black/60 bg-[#c6c6c6]/30 rounded-full">
           {footerLinks.map((link, index) => (
             <li key={index}>
@@ -84,7 +87,7 @@ export default function Footer() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Schedule a 30-minute discovery call with Ayuba Alexander"
-        className="self-center text-sm px-2.5 py-0.5 w-fit text-white cursor-pointer flex whitespace-nowrap items-center bg-black rounded-full hover:text-white transition-all"
+        className="self-center mb-10 text-sm px-2.5 py-0.5 w-fit text-white cursor-pointer flex whitespace-nowrap items-center bg-black rounded-full hover:text-white transition-all"
       >
         Schedule a Call
       </motion.a>
