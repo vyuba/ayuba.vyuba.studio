@@ -25,6 +25,7 @@ export interface Work {
 const works: Work[] = [
   {
     id: 1,
+    link: "https://www.mejimeji.co/",
     slug: "mejimeji",
     bannerImage: "/images/project1-banner.jpg",
     title: "Meji Meji",
@@ -32,10 +33,10 @@ const works: Work[] = [
     skills: ["JavaScript", "CSS", "Shopify", "Liquid", "Figma"],
     selectedWorks: true,
     commingSoon: false,
+    liveLink: "https://www.mejimeji.co/",
     aspectRatio: "portrait",
-    hasCaseStudy: true,
-    caseStudyUrl: "/work/mejimeji",
-
+    hasCaseStudy: false,
+    // caseStudyUrl: "/work/mejimeji",
     description:
       "I was brought in by Amzora Automation to help make their operational scale visible and legible. The initial focus was on warehouse and operations design, shaping how the physical infrastructure, workflows, and systems were presented to reflect efficiency, credibility, and readiness to scale.As the work progressed, my involvement naturally expanded beyond spatial and visual execution into brand and growth leadership.",
     backgroundImage: "/works/mejimeji.co/mejimeji-background.webp",
